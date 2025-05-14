@@ -119,9 +119,6 @@ SUBSYSTEM_DEF(dummy) // who ya callin dummy, dummy?
 			random_clothes = FALSE
 			clothes = new clothes()
 			clothes.equip(mannequin, TRUE, clint)
-	if(!genitals)
-		for(var/obj/item/organ/genital/nad in mannequin.internal_organs)
-			qdel(nad) // say bye to ur naddies
 	if(!underwear)
 		mannequin.underwear = "Nude"
 		mannequin.socks = "Nude"
@@ -339,7 +336,6 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	icon_render_key = null
 	transform = initial(transform)
 	dummyckey = null
-	destroy_genitals()
 	cut_overlays()
 	if(loc)
 		moveToNullspace()

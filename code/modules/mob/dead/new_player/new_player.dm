@@ -179,10 +179,6 @@
 		client.prefs.ShowChoices(src)
 		return 1
 
-	if(href_list["show_hornychat"])
-		SSchat.HornyPreferences(src)
-		return 1
-
 	// if(href_list["directory"])
 	// 	client.show_character_directory()
 	// 	return 1

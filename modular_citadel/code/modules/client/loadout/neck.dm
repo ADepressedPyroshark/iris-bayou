@@ -628,18 +628,3 @@
 	path = /obj/item/clothing/neck/heartcollar
 	cost = 0
 
-/datum/gear/neck/redcowbell
-	name = "Red cowbell collar"
-	path = /obj/item/clothing/neck/redcowbell
-	cost = 0
-
-/datum/gear/neck/whitecowbell
-	name = "white cowbell collar"
-	path = /obj/item/clothing/neck/whitecowbell
-	cost = 0
-
-/datum/gear/neck/bluecowbell
-	name = "Blue cowbell collar"
-	path = /obj/item/clothing/neck/bluecowbell
-	cost = 0
-

@@ -5,17 +5,6 @@
 /// Format: PERSONALITY_TRAIT(trait, emoji, traits that can see this trait -- can be multiple, put commas in between)
 /// like this: PERSONALITY_TRAIT(TRAIT_ERPBOYKISSER, 🍆, TRAIT_HEAT_DETECT, TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER)
 GLOBAL_LIST_INIT(personality_quirks, list(
-	PERSONALITY_TRAIT(TRAIT_IN_HEAT,          span_love("😘"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPBOYKISSER,     span_love("🍆"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPGIRLKISSER,    span_love("🍑"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPANYKISSER,     span_love("💋"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPQUICKY,        span_love("⏰"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPLONGTERM,      span_love("📅"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPBOTTOM,        span_love("😔"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPTOP,           span_love("😎"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPSWITCH,        span_love("☯"), TRAIT_HEAT_DETECT),
-	PERSONALITY_TRAIT(TRAIT_ERPFLIRTY,        span_love("🌹"), TRAIT_HEAT_DETECT),
-
 	PERSONALITY_TRAIT(TRAIT_RPLONGTERM,       span_greenannounce("📅"), TRAIT_RPFOCUSED),
 	PERSONALITY_TRAIT(TRAIT_RPSHORTTERM,      span_greenannounce("⏰"), TRAIT_RPFOCUSED),
 	PERSONALITY_TRAIT(TRAIT_RPSERIOUS,        span_greenannounce("👑"), TRAIT_RPFOCUSED),
@@ -23,11 +12,11 @@ GLOBAL_LIST_INIT(personality_quirks, list(
 	PERSONALITY_TRAIT(TRAIT_RPSCRUBS,         span_greenannounce("⛑"), TRAIT_RPFOCUSED),
 	PERSONALITY_TRAIT(TRAIT_RPDAYSOFOURLIVES, span_greenannounce("💀"), TRAIT_RPFOCUSED),
 	
-	PERSONALITY_TRAIT(TRAIT_PVEFOC,           span_danger("✌️"), TRAIT_HEAT_DETECT, TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
-	PERSONALITY_TRAIT(TRAIT_PVPFOC,           span_danger("🔥"), TRAIT_HEAT_DETECT, TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
-	PERSONALITY_TRAIT(TRAIT_OOCAPP,           span_danger("☎️"), TRAIT_HEAT_DETECT, TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER), //It needs all this, otherwise people wont see it
-	PERSONALITY_TRAIT(TRAIT_COMBATSWITCH,     span_danger("🌎"), TRAIT_HEAT_DETECT, TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
-	PERSONALITY_TRAIT(TRAIT_SHY,              span_danger("😔"), TRAIT_HEAT_DETECT, TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
+	PERSONALITY_TRAIT(TRAIT_PVEFOC,           span_danger("✌️"),  TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
+	PERSONALITY_TRAIT(TRAIT_PVPFOC,           span_danger("🔥"),  TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
+	PERSONALITY_TRAIT(TRAIT_OOCAPP,           span_danger("☎️"),  TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER), //It needs all this, otherwise people wont see it
+	PERSONALITY_TRAIT(TRAIT_COMBATSWITCH,     span_danger("🌎"),  TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
+	PERSONALITY_TRAIT(TRAIT_SHY,              span_danger("😔"),  TRAIT_RPFOCUSED, TRAIT_ADV_SEEKER),
 
 	PERSONALITY_TRAIT(TRAIT_ADV_ER,           span_binarysay("♞"), TRAIT_ADV_SEEKER),
 	PERSONALITY_TRAIT(TRAIT_ADV_LFG,          span_binarysay("💑"), TRAIT_ADV_SEEKER),
@@ -45,16 +34,6 @@ GLOBAL_LIST_INIT(personality_quirks, list(
 /// Use span defines like span_warning("words") please, they make it look nice
 /// Format: THE_TRAIT = "description"
 GLOBAL_LIST_INIT(personalitytrait2description, list(
-	TRAIT_IN_HEAT = 				 		  span_love("They are looking for a good time, you should check their OOC Notes."),
-	TRAIT_ERPBOYKISSER = 			 		  span_love("They look like they prefer guys."),
-	TRAIT_ERPGIRLKISSER =			 		  span_love("They look like they prefer girls."),
-	TRAIT_ERPANYKISSER = 			 		  span_love("They look like they'd kiss boys OR girls."),
-	TRAIT_ERPQUICKY =						  span_love("They look like they're looking for flings, not long term partners."),
-	TRAIT_ERPLONGTERM = 			 		  span_love("They look like they're looking for long term sexual partners."),
-	TRAIT_ERPBOTTOM = 						  span_love("They look like a bottom, you'll probably need to be the one to approach."),
-	TRAIT_ERPTOP = 							  span_love("They look like a top, maybe if you wiggle right they'll approach you first."),
-	TRAIT_ERPSWITCH = 						  span_love("They look like a switch, see what works."),
-	TRAIT_ERPFLIRTY = 						  span_love("They look flirty, or like being flirty with them might be very effective.  Check out the *help command for *flirts."),
 	TRAIT_RPLONGTERM = 				 span_greenannounce("They are looking for RP that is long term focused. Perhaps contact them via LOOC to work that out together?"),
 	TRAIT_RPSHORTTERM = 			 span_greenannounce("They are looking for RP that is short term focused. This generally means only things in the current round."),
 	TRAIT_RPSERIOUS =				 span_greenannounce("They are looking for RP that is relatively serious, if you to want to take the setting seriously maybe you should chatter at them via LOOC?"),
@@ -199,12 +178,6 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 	if(!isnull(effects_exam))
 		. += effects_exam
 
-	//CIT CHANGES START HERE - adds genital details to examine text
-	if(LAZYLEN(internal_organs) && CHECK_BITFIELD(user.client?.prefs.cit_toggles, GENITAL_EXAMINE))
-		for(var/obj/item/organ/genital/dicc in internal_organs)
-			if(istype(dicc) && dicc.is_exposed())
-				. += "[dicc.desc]"
-	//END OF CIT CHANGES
 
 	var/list/m8cup = list()
 	if(lip_style && lip_color)
@@ -486,11 +459,6 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 			if(91.01 to INFINITY)
 				msg += "[t_He] [t_is] a shitfaced, slobbering wreck.\n"
 
-	if(reagents.has_reagent(/datum/reagent/fermi/astral))
-		if(mind)
-			msg += "[t_He] has wild, spacey eyes and they have a strange, abnormal look to them.\n"
-		else
-			msg += "[t_He] has wild, spacey eyes and they don't look like they're all there.\n"
 
 	if(isliving(user))
 		var/mob/living/L = user
@@ -509,11 +477,6 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 			if (HAS_TRAIT(src, TRAIT_DEAF))
 				msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
 
-	var/obj/item/organ/vocal_cords/Vc = user.getorganslot(ORGAN_SLOT_VOICE)
-	if(Vc)
-		if(istype(Vc, /obj/item/organ/vocal_cords/velvet))
-			if(client.prefs.cit_toggles & HYPNO)
-				msg += "<span class='velvet'><i>You feel your chords resonate looking at them.</i></span>\n"
 
 
 	if(!appears_dead)
@@ -591,92 +554,11 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 //erp/rp term specification
 	//long term rp/erp
 	if(HAS_TRAIT(src, TRAIT_RPLONGTERM))
-		. += span_green("[t_He] wants long term RP/ERP relationships!</span>")
+		. += span_green("[t_He] wants long term RP relationships!</span>")
 	//short term
 	if(HAS_TRAIT(src, TRAIT_RPLONGTERM))
-		. += span_green("[t_He] wants short term RP/ERP relationships!</span>")
+		. += span_green("[t_He] wants short term RP relationships!</span>")
 
-
-//quick physical info
-	//big ass
-	if(HAS_TRAIT(src, TRAIT_BIGBUTT))
-		. += span_neovgre_small("[t_He] has a big backside!</span>")
-	//booba
-	if(HAS_TRAIT(src, TRAIT_BIGBOOBS))
-		. += span_neovgre_small("[t_He] has big boobs!</span>")
-	//balls
-	if(HAS_TRAIT(src, TRAIT_BIGBALLS))
-		. += span_neovgre_small("[t_He] has stuffed pants!</span>")
-	//weenus
-	if(HAS_TRAIT(src, TRAIT_BIGWEENIE))
-		. += span_neovgre_small("[t_He] might buy cucumbers!</span>")
-	
-	
-
-
-//The kissers
-	//anykisser
-	if(HAS_TRAIT(src, TRAIT_ERPANYKISSER))
-		. += span_love("[t_He]'d kiss just about anyone!</span>")
-
-	//boykisser
-	if(HAS_TRAIT(src, TRAIT_ERPBOYKISSER))
-		. += span_love("[t_He]'d prefer boys!</span>")
-
-	//girlkisser
-	if(HAS_TRAIT(src, TRAIT_ERPGIRLKISSER))
-		. += span_love("[t_He]'d prefer girls!</span>")
-
-//The positioners
-	//switch
-	if(HAS_TRAIT(src, TRAIT_ERPSWITCH))
-		. += span_love("[t_He] is a switch!</span>")
-	//top
-	if(HAS_TRAIT(src, TRAIT_ERPTOP))
-		. += span_love("[t_He] is a top!</span>")
-	//bottom
-	if(HAS_TRAIT(src, TRAIT_ERPBOTTOM))
-		. += span_love("[t_He] is a bottom!</span>")
-
-//The stylers
-	//no erp
-	if(HAS_TRAIT(src, TRAIT_NOERP))
-		. += span_clown("[t_He] doesn't ERP!</span>")
-	//vanilla
-	if(HAS_TRAIT(src, TRAIT_VANILLAERP))
-		. += span_clown("[t_He] prefers vanilla scenes!</span>")
-	//rough
-	if(HAS_TRAIT(src, TRAIT_ROUGHERP))
-		. += span_clown("[t_He] prefers rougher scenes!</span>")
-	//extreme
-	if(HAS_TRAIT(src, TRAIT_EXTREMEERP))
-		. += span_clown("[t_He] prefers extreme scenes!</span>")
-	//snuggler
-	if(HAS_TRAIT(src, TRAIT_SNUGGLER))
-		. += span_clown("[t_He] is a softy that wants snuggles for sure.")
-	//orally fixated
-	if(HAS_TRAIT(src, TRAIT_ORAL_FIXATION))
-		. += span_clown("[t_He] seems a bit orally fixated.")
-	//orally fixated
-	if(HAS_TRAIT(src, TRAIT_RISKY_BUSINESS))
-		. += span_clown("[t_He] is into creampies.")
-
-//The partners
-	//feral
-	if(HAS_TRAIT(src, TRAIT_FERALERP))
-		. += span_love("[t_He] is okay with ferals!</span>")
-	//robot
-	if(HAS_TRAIT(src, TRAIT_ROBOTERP))
-		. += span_love("[t_He] is okay with robots!</span>")
-	//vore
-	if(HAS_TRAIT(src, TRAIT_VOREERP))
-		. += span_love("[t_He] is okay with vore!</span>")
-	//fat
-	if(HAS_TRAIT(src, TRAIT_FATERP))
-		. += span_love("[t_He] is okay with fatplay!</span>")
-	//feeder
-	if(HAS_TRAIT(src, TRAIT_DANIMAL))
-		. += span_love("[t_He] is okay with feeding play!</span>")
 
 
 	var/trait_exam = common_trait_examine()
@@ -744,10 +626,6 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 		. += span_boldwarning("[t_He] [t_has] <u>opted out</u> of PVP combat! Please respect their wishes and do not engage in PVP with them. If they are trying to PVP with you, please let the staff know!")
 	else if(!HAS_TRAIT(user, TRAIT_PVEFOC) && HAS_TRAIT(src, TRAIT_PVPFOC))
 		. += span_alert("[t_He] [t_has] is looking for PVP encounters! If you're looking for a fight, they're the one to go to!")
-
-	. += span_green("Right click and select flirt with me to [span_love("maybe get my attention!~")]")
-	
-	. += span_green("Ctrl-Shift click me for [span_love("special interactions!~")]")
 
 	if(has_status_effect(STATUS_EFFECT_ADMINSLEEP))
 		. += span_danger("<B>This player has been slept by staff.</B>\n")

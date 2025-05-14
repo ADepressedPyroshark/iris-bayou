@@ -55,15 +55,14 @@
 		qdel(src)
 		return
 	data = listify(data)
-	if(CHECK_PREFS(owner, SEE_FANCY_OFF_SCREEN_RUNECHAT))
-		if(mommy)
-			if(mommy.display_turf && mommy.display_turf != target)
-				alt_display = mommy.display_turf
-				offscreen = TRUE
-				if(mommy.is_thing)
-					is_thing = TRUE
-					if(ismob(alt_display.loc))
-						alt_display = alt_display.loc
+	if(mommy)
+		if(mommy.display_turf && mommy.display_turf != target)
+			alt_display = mommy.display_turf
+			offscreen = TRUE
+			if(mommy.is_thing)
+				is_thing = TRUE
+				if(ismob(alt_display.loc))
+					alt_display = alt_display.loc
 			else if(mommy.is_thing)
 				is_thing = TRUE
 				if(ismob(target.loc))

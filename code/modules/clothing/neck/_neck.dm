@@ -283,7 +283,7 @@
 	poly_colors = list("#222222", "#888888")
 
 /obj/item/clothing/neck/petcollar/choker
-	desc = "Quite fashionable... if you're somebody who's just read their first BDSM-themed erotica novel."
+	desc = "It sure is a choker."
 	name = "choker"
 	icon_state = "choker"
 	poly_colors = list("#222222")
@@ -319,7 +319,7 @@
 
 /obj/item/clothing/neck/petcollar/locked/choker
 	name = "choker"
-	desc = "Quite fashionable... if you're somebody who's just read their first BDSM-themed erotica novel."
+	desc = "It sure is a choker."
 	icon_state = "choker"
 	poly_colors = list("#222222")
 
@@ -467,25 +467,6 @@
 	desc = "A black synthleather collar with spikey studs."
 	icon_state = "spikecollar"
 	inhand_icon_state = "spikecollar"
-
-/obj/item/clothing/neck/redcowbell
-	name = "Red cowbell collar"
-	desc = "This collar appears to have red band and a yellow bell. Moo!"
-	icon_state = "collar_cowbell"
-	inhand_icon_state = "collar_cowbell"
-
-/obj/item/clothing/neck/whitecowbell
-	name = "white cowbell collar"
-	desc = "This collar appears to have white band and a grey bell. Moo!"
-	icon_state = "collar_cowbell_white"
-	inhand_icon_state = "collar_cowbell_white"
-
-/obj/item/clothing/neck/bluecowbell
-	name = "blue cowbell collar"
-	desc = "This collar appears to have blue band and a grey bell. Moo!"
-	icon_state = "collar_cowbell_bluu"
-	inhand_icon_state = "collar_cowbell_blue"
-
 
 /obj/item/clothing/neck/customfleur
 	name = "Fluer's necklace"

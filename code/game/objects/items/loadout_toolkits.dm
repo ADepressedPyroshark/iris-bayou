@@ -300,8 +300,6 @@
 	new /obj/item/musicaltuner(src)
 	new /obj/item/melee/classic_baton/telescopic(src)
 	new /obj/item/reagent_containers/glass/bottle/chloralhydrate(src)
-	new /obj/item/restraints/handcuffs/fake/kinky(src)
-	new /obj/item/reagent_containers/food/snacks/grown/fever_blossom(src)
 
 /datum/loadout_box/entertainer
 	entry_tag = "entertainer's tools"
@@ -488,25 +486,6 @@
 	entry_class = LOADOUT_CAT_SINISTER
 	spawn_thing = /obj/item/storage/box/tools/drugs
 
-/obj/item/storage/box/tools/mancatcher
-	name = "mancatcher tools" //for slavin'
-
-/obj/item/storage/box/tools/mancatcher/PopulateContents()
-	new /obj/item/melee/onehanded/slavewhip(src)
-	new /obj/item/electropack/shockcollar(src)
-	new /obj/item/electropack/shockcollar/explosive(src)
-	new /obj/item/assembly/signaler(src)
-	new /obj/item/restraints/legcuffs/bola(src)
-	new /obj/item/restraints/legcuffs/bola(src)
-	new /obj/item/restraints/handcuffs (src)
-	new /obj/item/restraints/legcuffs/beartrap(src)
-	new /obj/item/restraints/legcuffs(src)
-
-/datum/loadout_box/mancatcher
-	entry_tag = "mancatcher tools"
-	entry_flags = LOADOUT_FLAG_TOOL_WASTER
-	entry_class = LOADOUT_CAT_SINISTER
-	spawn_thing = /obj/item/storage/box/tools/mancatcher
 
 /obj/item/storage/box/tools/kidnapper
 	name = "kidnapper tools" //for napin'

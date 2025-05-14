@@ -217,11 +217,6 @@
 	breakouttime = 10 //Deciseconds = 1s
 	demoralize_criminals = FALSE
 
-/obj/item/restraints/handcuffs/fake/kinky
-	name = "kinky handcuffs"
-	desc = "Imitation handcuffs meant for erotic roleplay."
-	icon_state = "handcuffgag"
-	inhand_icon_state = "kinkycuff"
 
 //Legcuffs
 

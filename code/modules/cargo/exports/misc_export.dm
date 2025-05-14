@@ -477,7 +477,6 @@
 		/obj/item/reagent_containers/food/snacks/grown/datura,
 		/obj/item/reagent_containers/food/snacks/grown/eggplant,
 		/obj/item/reagent_containers/food/snacks/grown/feracactus,
-		/obj/item/reagent_containers/food/snacks/grown/fever_blossom,
 		/obj/item/reagent_containers/food/snacks/grown/poppy,
 		/obj/item/reagent_containers/food/snacks/grown/poppy/lily,
 		/obj/item/reagent_containers/food/snacks/grown/poppy/geranium,

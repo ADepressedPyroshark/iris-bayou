@@ -178,7 +178,6 @@ SUBSYSTEM_DEF(statpanels)
 		return
 	discard_horny_demographic(C, FALSE)
 	var/sex = M.gender // remind me to add in more options than BYOND's default
-	var/tbs = C.prefs.tbs // Turner Broadcasting System (RIP the conan show)
 	var/who_i_kiss = C.prefs.kisser // smoonch
 	switch(sex)
 		if(MALE)
@@ -189,13 +188,6 @@ SUBSYSTEM_DEF(statpanels)
 			cached_herms |= CKEY
 		else
 			cached_them |= CKEY
-	switch(tbs)
-		if(TBS_BOTTOM)
-			cached_bottoms |= CKEY
-		if(TBS_TOP)
-			cached_tops |= CKEY
-		if(TBS_SHOES) // tops, bottoms, shoes
-			cached_switches |= CKEY
 	switch(who_i_kiss)
 		if(KISS_BOYS)
 			cached_boykissers |= CKEY
@@ -292,9 +284,9 @@ SUBSYSTEM_DEF(statpanels)
 			majority_sex = "Anysexes"
 	
 	/// There are a lot of Boykissing Female Tops on!
-	var/majority_string = "The server has a lot of [majority_kisser], and [majority_sex], and [majority_tbs] on!"
+	var/majority_string = "The server has a lot of [majority_kisser], and [majority_sex] on!"
 	/// milk yeah of course
-	var/desired_string = "If you're looking for a good time, you should play \a [most_desired_sex] [most_desired_tbs]!"
+	var/desired_string = "If you're looking for a good time, you should play!"
 	nashs_most_wanted = desired_string
 	the_majority = majority_string
 	/// all done!

@@ -407,25 +407,6 @@
 	path =  /obj/item/card/id/selfassign
 	cost = 0
 
-/datum/gear/backpack/twocolorcollar
-	name = "Two Color Lockable Leather Collar"
-	path = /obj/item/clothing/neck/petcollar/choker
-
-/datum/gear/backpack/onecolorcollar
-	name = "One Color Lockable Leather Collar"
-	path = /obj/item/clothing/neck/petcollar/locked
-	cost = 0
-
-/datum/gear/backpack/shockcollar
-	name = "Kinky Shock Collar"
-	path = /obj/item/electropack/shockcollar
-	cost = 0
-
-/datum/gear/backpack/shockcollarshimusa
-	name = "Kinky Shock Collar w/ Shackles"
-	path = /obj/item/electropack/shockcollar/shimsusa_shackles
-	cost = 0
-
 //Cameras
 
 /datum/gear/backpack/camera/early

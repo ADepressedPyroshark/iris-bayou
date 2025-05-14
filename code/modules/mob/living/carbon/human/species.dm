@@ -380,8 +380,6 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
-		if(NOGENITALS in H.dna.species.species_traits)
-			H.give_genitals(TRUE) //call the clean up proc to delete anything on the mob then return.
 		if(mutant_bodyparts["meat_type"]) //I can't believe it's come to the meat
 			H.type_of_meat = GLOB.meat_types[H.dna.features["meat_type"]]
 
@@ -1824,9 +1822,6 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 	var/target_on_help = target.a_intent == INTENT_HELP
 	var/target_aiming_for_mouth = target.zone_selected == "mouth"
 	var/target_restrained = target.restrained()
-	var/same_dir = (target.dir & user.dir)
-	var/aim_for_groin  = user.zone_selected == "groin"
-	var/target_aiming_for_groin = target.zone_selected == "groin"
 	var/aim_for_head = user.zone_selected == "head"
 	var/target_aiming_for_head = target.zone_selected == "head"
 
@@ -1850,65 +1845,6 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 		if (!HAS_TRAIT(target, TRAIT_PERMABONER))
 			stop_wagging_tail(target)
 		return FALSE
-	else if(aim_for_groin && (target == user || target.lying || same_dir) && (target_on_help || target_restrained || target_aiming_for_groin))
-		if(target.client?.prefs.cit_toggles & NO_ASS_SLAP)
-			to_chat(user,"A force stays your hand, preventing you from slapping \the [target]'s ass!")
-			return FALSE
-		user.do_attack_animation(target, ATTACK_EFFECT_ASS_SLAP)
-		if(HAS_TRAIT(target, TRAIT_STEEL_ASS))
-			playsound(target.loc, 'sound/weapons/slap.ogg', 50, 1, -1)
-			user.adjustStaminaLoss(50)
-			user.visible_message(\
-				span_danger("\The [user] slaps \the [target]'s ass, but their hand bounces off like they hit metal!"),\
-				span_danger("You slap [user == target ? "your" : "\the [target]'s"] ass, but feel an intense amount of pain as you realise their buns are harder than steel!"),\
-				"You hear a slap.")
-			return FALSE
-		if(HAS_TRAIT(target, TRAIT_JIGGLY_ASS))
-			if(!COOLDOWN_FINISHED(src, ass))
-				if(user == target)
-					to_chat(user, span_alert("Your ass is still jiggling about way too much to get a good smack!"))
-				else
-					to_chat(user, span_alert("[target]'s big blubbery ass is still jiggling about way too much to get a good smack!"))
-			else
-				COOLDOWN_START(src, ass, 5 SECONDS)
-				target.Dizzy(5)
-				if(user == target)
-					playsound(target.loc, 'sound/weapons/slap.ogg', 50, FALSE, -1) // deep bassy ass
-					user.adjustStaminaLoss(25)
-					user.visible_message(
-						span_notice("[user] gives [user.p_their()] ass a smack!"),
-						span_notice("You give your big fat ass a smack! It sloshes and throws you off balance!"),
-					)
-					return
-				else
-					SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "ass", /datum/mood_event/butt_slap)
-					playsound(target.loc, 'sound/weapons/slap.ogg', 50, FALSE, -1) // deep bassy ass
-					// var/vol = 40
-					// var/dist = 15
-					// var/time = 0.5 SECONDS
-					// for(var/i in 1 to 3)
-					// 	vol *= 0.75
-					// 	dist = round(dist*0.75)
-					// 	addtimer(CALLBACK(src,PROC_REF(bootysmack), get_turf(target), vol, dist), time)
-					// 	time += 0.5 SECONDS
-					target.adjustStaminaLoss(25)
-					user.visible_message(
-						span_notice("\The [user] slaps [target]'s ass!"),
-						span_greentext("That wonderful donk <i>demands</i> attention! You smack that plump, jiggly ass, your hand sinking in for a moment! It gives you a wobbly round of applause and knocks its owner off balance! So satifsying!~"),
-						target = target, 
-						target_message = span_notice("[user] smacks your big fat ass and sends it jiggling! It sloshes about and throws you off balance!"))
-				return FALSE
-		user.adjustStaminaLossBuffered(3)
-		target.adjust_arousal(20,maso = TRUE)
-		if (ishuman(target) && HAS_TRAIT(target, TRAIT_MASO) && target.has_dna() && prob(10))
-			target.mob_climax(forced_climax=TRUE)
-		if (!HAS_TRAIT(target, TRAIT_PERMABONER))
-			stop_wagging_tail(target)
-		target.visible_message(\
-			span_danger("\The [user] slaps [user == target ? "[user.p_their()] own" : "\the [target]'s"] ass!"),\
-			span_notice("[user] slaps your ass! "),\
-			"You hear a slap.", target = user, target_message = span_notice("You slap [user == target ? "your own" : "\the [target]'s"] ass! "))
-
 //BONK chucklehead!
 	else if(aim_for_head && ( target_on_help || target_restrained || target_aiming_for_head))
 		playsound(target.loc, 'sound/weapons/klonk.ogg', 50, 1, -1)
@@ -2300,9 +2236,6 @@ GLOBAL_LIST_EMPTY(roundstart_race_names)
 			if(BP)
 				if(BP.receive_damage(damage_amount, 0, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness, damage_coverings = damage_coverings))
 					H.update_damage_overlays()
-					if(damage_amount < 20)
-						H.adjust_arousal(damage_amount, maso = TRUE)
-
 			else//no bodypart, we deal damage with a more general method.
 				H.adjustBruteLoss(damage_amount)
 		if(BURN)

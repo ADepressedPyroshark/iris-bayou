@@ -37,7 +37,6 @@ GLOBAL_LIST_EMPTY(mobs_with_editable_flavor_text) //et tu, hacky code
 	examine_no_preview = _examine_no_preview
 
 	RegisterSignal(target, COMSIG_PARENT_EXAMINE,PROC_REF(show_flavor))
-	RegisterSignal(target, COMSIG_FLIST,PROC_REF(show_flist))
 
 	if(can_edit && ismob(target)) //but only mobs receive the proc/verb for the time being
 		var/mob/M = target
@@ -92,8 +91,6 @@ GLOBAL_LIST_EMPTY(mobs_with_editable_flavor_text) //et tu, hacky code
 	if(href_list["show_flavor"])
 		var/atom/target = locate(href_list["show_flavor"])
 
-		if(attach_internet_link)
-			return show_flist(target, usr)
 
 		var/mob/living/L = target
 		var/text = texts_by_atom[target]
@@ -102,20 +99,7 @@ GLOBAL_LIST_EMPTY(mobs_with_editable_flavor_text) //et tu, hacky code
 			onclose(usr, "[target.name]")
 		return TRUE
 
-/datum/element/flavor_text/proc/show_flist(mob/target, mob/reader)
-	if(!ishuman(target))
-		return
-	if(!reader)
-		return
-	INVOKE_ASYNC(src, PROC_REF(actually_show_flist), target, reader)
-	return TRUE
 
-/datum/element/flavor_text/proc/actually_show_flist(mob/living/carbon/human/H, mob/reader)
-	if(!H.dna.features["flist"])
-		to_chat(reader, span_alert("They don't have an F-List link!"))
-		return
-	to_chat(reader, span_green("The fancy F-List dialog box is broken :( so just imagine there's a cool window here with a button!"))
-	to_chat(reader, span_green("<b>Click here for F-List: <a href='[H.dna.features["flist"]]'>[H.dna.features["flist"]]</a></b>"))
 
 	// var/show_it = alert(
 	// 	reader,

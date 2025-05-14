@@ -317,12 +317,7 @@
 		return momchat
 	show_message(message, MSG_AUDIBLE, deaf_message, deaf_type, null, momchat)
 	if(islist(data) && LAZYACCESS(data, "is_radio") && (data["ckey"] in GLOB.directory) && !SSchat.debug_block_radio_blurbles)
-		if(CHECK_PREFS(src, RADIOPREF_HEAR_RADIO_STATIC))
-			playsound(src, RADIO_STATIC_SOUND, 20, FALSE, SOUND_DISTANCE(2), ignore_walls = TRUE)
-		if(CHECK_PREFS(src, RADIOPREF_HEAR_RADIO_BLURBLES))
-			var/mob/blurbler = ckey2mob(data["ckey"])
-			if(blurbler && blurbler != src)
-				blurbler.play_AC_typing_indicator(raw_message, src, src, TRUE)
+		playsound(src, RADIO_STATIC_SOUND, 20, FALSE, SOUND_DISTANCE(2), ignore_walls = TRUE)
 	return message
 
 /mob/living/send_speech(datum/rental_mommy/chat/momchat)

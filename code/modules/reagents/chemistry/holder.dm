@@ -498,7 +498,6 @@
 					var/datum/chemical_reaction/Ferm = selected_reaction
 					fermiIsReacting = FALSE
 					SSblackbox.record_feedback("tally", "fermi_chem", 1, ("[Ferm] explosion"))
-					Ferm.FermiExplode(src, my_atom, volume = total_volume, temp = chem_temp, pH = pH)
 					return 0
 
 				//This is just to calc the on_reaction multiplier, and is a candidate for removal.
@@ -524,10 +523,7 @@
 			else
 				if (C.FermiChem)//Just to make sure, should only proc when grenades are combining.
 					if (chem_temp > C.ExplodeTemp) //To allow fermigrenades
-						var/datum/chemical_reaction/fermi/Ferm = selected_reaction
 						fermiIsReacting = FALSE
-						SSblackbox.record_feedback("tally", "fermi_chem", 1, ("[Ferm] explosion"))
-						Ferm.FermiExplode(src, my_atom, volume = total_volume, temp = chem_temp, pH = pH)
 					return 0
 
 				for(var/B in cached_required_reagents) //
@@ -619,7 +615,6 @@
 	if(istype(my_atom, /obj/item/reagent_containers))
 		var/obj/item/reagent_containers/RC = my_atom
 		RC.pH_check()
-	C.FermiFinish(src, my_atom, reactedVol)
 	reactedVol = 0
 	targetVol = 0
 	handle_reactions()
@@ -711,11 +706,8 @@
 				if (R.purity < C.PurityMin)//If purity is below the min, blow it up.
 					fermiIsReacting = FALSE
 					SSblackbox.record_feedback("tally", "fermi_chem", 1, ("[P] explosion"))
-					C.FermiExplode(src, my_atom, (total_volume), cached_temp, pH)
 					STOP_PROCESSING(SSprocessing, src)
 					return
-
-	C.FermiCreate(src, addChemAmmount, purity)//proc that calls when step is done
 
 	//Apply pH changes and thermal output of reaction to beaker
 	chem_temp = round(cached_temp + (C.ThermicConstant * addChemAmmount))
@@ -728,7 +720,6 @@
 		//go to explode proc
 		fermiIsReacting = FALSE
 		SSblackbox.record_feedback("tally", "fermi_chem", 1, ("[C] explosions"))
-		C.FermiExplode(src, my_atom, (total_volume), chem_temp, pH)
 		STOP_PROCESSING(SSprocessing, src)
 		return
 

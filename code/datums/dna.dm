@@ -57,9 +57,6 @@
 	destination.dna.custom_species = custom_species
 	destination.dna.alt_appearance = alt_appearance
 	destination.dna.temporary_mutations = temporary_mutations.Copy()
-	if(ishuman(destination))
-		var/mob/living/carbon/human/H = destination
-		H.give_genitals(TRUE)//This gives the body the genitals of this DNA. Used for any transformations based on DNA
 	if(transfer_SE)
 		destination.dna.mutation_index = mutation_index
 		destination.dna.default_mutation_genes = default_mutation_genes
@@ -714,63 +711,3 @@
 	//holder.resize = features["body_width"] / old_width
 	holder.transform = holder.transform.Scale(features["body_width"]/old_width, 1)
 	holder.update_transform()
-
-// duplicated code *pwns*
-/datum/dna/proc/shift_genital_order(which_one, move_up)
-	if(!which_one)
-		return
-	var/list/our_genitals = decode_cockstring()
-	if(!(which_one in our_genitals))
-		return
-	if(move_up) // reverse the list cus its easier to just search down the list
-		our_genitals = reverseList(our_genitals) // after all, up is down upsidedown!
-	var/genital_start
-	var/genital_dest
-	var/index = 1
-	for(var/nad in our_genitals)
-		if(genital_start && features[nad]) // found our nad up the list, keep checking for the next nad that exists
-			genital_dest = index
-			break
-		if(!genital_start && nad == which_one)
-			genital_start = index
-		index++
-	if(!genital_start || !genital_dest)
-		return // nothing found!
-	our_genitals.Swap(genital_start, genital_dest) // swap!
-	if(move_up) // bop it swap it cock it and reverse it
-		our_genitals = reverseList(our_genitals)
-	var/list/default_cockstring = splittext(DEF_COCKSTRING, ":")
-	for(var/coc in our_genitals) // just to make sure nothing wierd got in there
-		if(!(coc in default_cockstring))
-			our_genitals -= coc
-			continue
-		default_cockstring -= coc
-	if(LAZYLEN(default_cockstring)) // and to make sure it has *everything* oh yeah keep DEF_COCKSTRING up to date
-		message_admins("Hey the cockstring wasn't empty, either Dan fucked up or something fucked up.")
-	return encode_cockstring(our_genitals)
-
-/// takes in whatever's at features["genital_order"] and spits out a list in order of what's present
-/// reverses it cus its more intuitive that way (for everyone but me)
-/datum/dna/proc/decode_cockstring(reverse = TRUE)
-	RETURN_TYPE(/list)
-	var/list/list_out = list()
-	list_out = splittext(features["genital_order"], ":")
-	if(reverse)
-		list_out = reverseList(list_out)
-	return list_out
-
-/// takes in a list of nads and outputs a cockstring, then saves it
-/// Also unreverses it, cus i crave the pain
-/datum/dna/proc/encode_cockstring(list/cockstring)
-	var/list/default_cockstring = splittext(DEF_COCKSTRING, ":")
-	cockstring = reverseList(cockstring)
-	for(var/coc in cockstring) // just to make sure nothing wierd got in there
-		if(!(coc in default_cockstring))
-			cockstring -= coc
-			continue
-		default_cockstring -= coc
-	if(LAZYLEN(default_cockstring)) // and to make sure it has *everything* oh yeah keep DEF_COCKSTRING up to date
-		message_admins("Hey the cockstring wasn't empty, either Dan fucked up or something fucked up.")
-	. = jointext(cockstring, ":")
-	features["genital_order"] = .
-

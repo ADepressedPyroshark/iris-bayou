@@ -1348,10 +1348,6 @@
 	path = /obj/item/grown/carbon_rose
 	subcategory = LOADOUT_SUBCATEGORY_HEAD_GENERAL
 
-/datum/gear/head/fever_blossom
-	name = "fever blossom"
-	path = /obj/item/reagent_containers/food/snacks/grown/fever_blossom
-	subcategory = LOADOUT_SUBCATEGORY_HEAD_GENERAL
 /*
 /datum/gear/head/tribal_helmet
 	name = "tribal helmet"

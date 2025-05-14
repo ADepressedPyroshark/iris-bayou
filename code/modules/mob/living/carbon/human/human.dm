@@ -22,7 +22,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 	add_verb(src, /mob/living/proc/mob_sleep)
 	add_verb(src, /mob/living/proc/toggle_mob_sleep)
 	add_verb(src, /mob/living/proc/lay_down)
-	add_verb(src, /mob/living/carbon/human/verb/underwear_toggle)
 	//initialize limbs first
 	create_bodyparts()
 
@@ -61,10 +60,8 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 	AddElement(/datum/element/flavor_text/carbon, _name = "Flavor Text", _save_key = "flavor_text")
 	AddElement(/datum/element/flavor_text, _name = "OOC Notes", _addendum = "Put information on ERP/lewd-related preferences here. THIS SHOULD NOT CONTAIN REGULAR FLAVORTEXT!!", _always_show = TRUE, _save_key = "ooc_notes", _examine_no_preview = TRUE)
 	//AddElement(/datum/element/flavor_text, _name = "Background Info Notes", _addendum = "Put information about your character's background!", _always_show = TRUE, _save_key = "background_info_notes", _examine_no_preview = TRUE)
-	AddElement(/datum/element/flavor_text, _name = "F-list link", _always_show = FALSE, _save_key = "flist", _examine_no_preview = TRUE, _attach_internet_link = TRUE)
 	AddElement(/datum/element/flavor_text, "", "Set Pose/Leave OOC Message", "This should be used only for things pertaining to the current round!")
 	AddElement(/datum/element/mob_holder, "corgi")
-	RegisterSignal(src, COMSIG_HUMAN_UPDATE_GENITALS,PROC_REF(signal_update_genitals))
 
 /mob/living/carbon/human/Destroy()
 	QDEL_NULL(physiology)
@@ -76,8 +73,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 /mob/living/carbon/human/prepare_data_huds()
 	//Update med hud images...
 	..()
-	//...genitals...
-	update_genitals()
 	//...sec hud images...
 	sec_hud_set_ID()
 	sec_hud_set_implants()
@@ -578,27 +573,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 				P.save_character()
 				update_body(TRUE)
 				show_underwear_panel()
-		if("update_every_fucking_crotch")
-			// if(COOLDOWN_FINISHED(GLOB, crotch_call_cooldown))
-			// 	for(var/mob/living/carbon/human/dic in GLOB.human_list)
-			// 		dic.update_genitals(TRUE)
-			// 	COOLDOWN_START(GLOB, crotch_call_cooldown, CROTCH_COOLDOWN)
-			show_genital_hide_panel()
-		if("open_genital_hide")
-			show_genital_hide_panel()
-		if("change_genital_whitelist")
-			if(!client?.prefs)
-				return
-			client.prefs.update_genital_whitelist()
-			SSpornhud.request_every_genital(src)
-			update_body(TRUE)
-			show_genital_hide_panel()
-		if("toggle_hide_genitals")
-			if(client?.prefs)
-				TOGGLE_BITFIELD(client.prefs.features["genital_hide"], text2num(href_list["genital_flag"]))
-			SSpornhud.request_every_genital(src)
-			show_genital_hide_panel()
-			update_body(TRUE)
 		if("shirt")
 			var/new_shirt = input(usr, "Select a new shirt!", "Changing") as null|anything in GLOB.undershirt_list
 			if(new_shirt)
@@ -618,7 +592,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 				show_message(span_notice("Nevermind!"))
 			show_underwear_panel()
 		if("shirt_toggle")
-			toggle_undies_visibility(PHUD_SHIRT)
 			update_body(TRUE)
 			show_underwear_panel()
 		if("shirt_oversuit")
@@ -646,7 +619,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 				show_message(span_notice("Nevermind!"))
 			show_underwear_panel()
 		if("undies_toggle")
-			toggle_undies_visibility(PHUD_PANTS)
 			update_body(TRUE)
 			show_underwear_panel()
 		if("undies_oversuit")
@@ -674,7 +646,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 				show_message(span_notice("Nevermind!"))
 			show_underwear_panel()
 		if("socks_toggle")
-			toggle_undies_visibility(PHUD_SOCKS)
 			update_body(TRUE)
 			show_underwear_panel()
 		if("socks_oversuit")
@@ -820,103 +791,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 	popup.open(FALSE)
 	onclose(src, "erp_window", src)
 
-/mob/living/carbon/human/proc/show_genital_hide_panel()
-	var/list/dat = list()
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=genital_return'>
-						Go back
-			</a>"}
-	dat += "<table class='table_genital_list'>"
-
-	dat += "<tr class='talign'><td class='talign'>"
-	dat += "<div class='gen_container'>"
-	dat += "<div class='gen_setting_name'>See Bellies:</div>" // everyone can has_cheezburger
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=toggle_hide_genitals;
-					genital_flag=[HIDE_BELLY]'>
-						[CHECK_BITFIELD(client.prefs.features["genital_hide"], HIDE_BELLY) ? "No" : "Yes"]
-			</a>"}
-	dat += "<div class='gen_setting_name'>See Butts:</div>" // everyone can has_cheezburger
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=toggle_hide_genitals;
-					genital_flag=[HIDE_BUTT]'>
-						[CHECK_BITFIELD(client.prefs.features["genital_hide"], HIDE_BUTT) ? "No" : "Yes"]
-			</a>"}
-	dat += "<div class='gen_setting_name'>See Breasts:</div>" // everyone can has_cheezburger
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=toggle_hide_genitals;
-					genital_flag=[HIDE_BOOBS]'>
-						[CHECK_BITFIELD(client.prefs.features["genital_hide"], HIDE_BOOBS) ? "No" : "Yes"]
-			</a>"}
-	dat += "<div class='gen_setting_name'>See Vaginas:</div>" // everyone can has_cheezburger
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=toggle_hide_genitals;
-					genital_flag=[HIDE_VAG]'>
-						[CHECK_BITFIELD(client.prefs.features["genital_hide"], HIDE_VAG) ? "No" : "Yes"]
-			</a>"}
-	dat += "<div class='gen_setting_name'>See Penises:</div>" // everyone can has_cheezburger
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=toggle_hide_genitals;
-					genital_flag=[HIDE_PENIS]'>
-						[CHECK_BITFIELD(client.prefs.features["genital_hide"], HIDE_PENIS) ? "No" : "Yes"]
-			</a>"}
-	dat += "<div class='gen_setting_name'>See Balls:</div>" // GET UR FUCKIN BURGER
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=toggle_hide_genitals;
-					genital_flag=[HIDE_BALLS]'>
-						[CHECK_BITFIELD(client.prefs.features["genital_hide"], HIDE_BALLS) ? "No" : "Yes"]
-			</a>"}
-
-	dat += "<div class='gen_setting_name'>Visibility Whitelist:</div>" // BURGER TIME
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=change_genital_whitelist'>
-						Modify?
-			</a>"}
-
-	dat += "<div class='gen_setting_name'>Apply Changes:</div>" // BURGER TIME
-	dat += {"<a
-				class='clicky'
-				href='
-					?src=[REF(src)];
-					action=update_every_fucking_crotch'>
-						Apply
-			</a>"}
-
-	dat += "</div>"
-	dat += "</td>"
-	dat += "</tr>"
-	dat += "</table>" // leaving this one out makes the save/undo line show up over the table, oddly enough!
-	dat += "<br>"
-
-	winshow(src, "erp_window", TRUE)
-	var/datum/browser/popup = new(src, "erp_window", "<div align='center'>Unsee what can be unseen!</div>", 400, 500)
-	popup.set_content(dat.Join())
-	popup.open(FALSE)
-	onclose(src, "erp_window", src)
 
 
 /mob/living/carbon/human/proc/canUseHUD()

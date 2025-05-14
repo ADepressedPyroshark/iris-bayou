@@ -69,8 +69,8 @@
 	..()
 
 /datum/reagent/medicine/fake_stimpak/on_mob_life(mob/living/carbon/M)
-		M.adjustBruteLoss(1*REM)
-		M.adjustFireLoss(1*REM)
+		M.adjustBruteLoss(-1*REM)
+		M.adjustFireLoss(-1*REM)
 		. = TRUE
 		..()
 

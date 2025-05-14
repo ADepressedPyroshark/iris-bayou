@@ -93,9 +93,6 @@
 
 		if(!client)
 			return
-		
-		if(pref_check && !CHECK_PREFS(src, pref_check))
-			return
 
 		msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
 
@@ -122,7 +119,7 @@
 			return
 	var/msg_backup = msg
 	///NOW HOLD ON THERE BUCKO, I think you're forgetting something~
-	if(momchat && momchat.furry_dating_sim && (isdummy(momchat.source) || CHECK_PREFS(src, SHOW_ME_HORNY_FURRIES))) // its right here
+	if(momchat && momchat.furry_dating_sim && (isdummy(momchat.source))) // its right here
 		if(!momchat.recipiant)
 			momchat.recipiant = src // for me? aw ya shouldntve!
 		msg = SSchat.BuildHornyFurryDatingSimMessage(momchat) // in my subsystem~
@@ -208,8 +205,6 @@
 	for(var/mob/M in hearers)
 		if(!M.client)
 			continue
-		if(pref_check && !CHECK_PREFS(M, pref_check))
-			continue
 		//This entire if/else chain could be in two lines but isn't for readabilty's sake.
 		var/blind = M.is_blind()
 		var/msg = message
@@ -290,7 +285,7 @@
 	var/saycolor = src.get_chat_color()
 
 	for(var/mob/M in hearers)
-		if(pref_check && !CHECK_PREFS(M, pref_check))
+		if(pref_check)
 			continue
 		var/msg = message
 		//if(M == src)

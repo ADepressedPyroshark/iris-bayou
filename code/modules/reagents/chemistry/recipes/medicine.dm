@@ -112,21 +112,6 @@
 //	FermiChem 			= TRUE		// If the chemical uses the Fermichem reaction mechanics
 //	PurityMin 			= 0
 
-/datum/chemical_reaction/synthtissue/FermiCreate(datum/reagents/holder, added_volume, added_purity)
-	var/datum/reagent/synthtissue/St = holder.has_reagent(/datum/reagent/synthtissue)
-	var/datum/reagent/N = holder.has_reagent(/datum/reagent/consumable/sugar)
-	if(!St)
-		return
-	if(holder.chem_temp > 320)
-		var/temp_ratio = 1-(330 - holder.chem_temp)/10
-		holder.remove_reagent(id, added_volume*temp_ratio)
-	if(St.purity < 1)
-		St.volume *= St.purity
-		St.purity = 1
-	var/amount = clamp(0.002, 0, N.volume)
-	N.volume -= amount
-	St.data["grown_volume"] = St.data["grown_volume"] + added_volume
-	St.name = "[initial(St.name)] [round(St.data["grown_volume"], 0.1)]u colony"
 
 /datum/chemical_reaction/styptic_powder
 	name = "Styptic Powder"

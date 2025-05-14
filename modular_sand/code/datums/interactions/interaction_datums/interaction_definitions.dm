@@ -66,15 +66,3 @@
 	needs_physical_contact = TRUE
 	is_self_action = TRUE
 	max_distance = 25
-
-/datum/interaction/consent
-	description = "Request consent for lewd stuff."
-	require_user_hands = TRUE
-	help_messages = "XU_NAME waves to XT_NAME."
-	needs_physical_contact = FALSE
-	max_distance = 25
-	can_autoplap = FALSE // HI WANNA HI WANNA HI WANNA HI WANNA
-
-/datum/interaction/consent/do_action(mob/living/user, mob/living/target)
-	SSinteractions.add_or_remove_consent(user, target)
-

@@ -237,7 +237,6 @@ SUBSYSTEM_DEF(chat)
 
 /datum/controller/subsystem/chat/Initialize(start_timeofday)
 	setup_emoticon_cache()
-	build_flirt_datums()
 	// build_stock_image_packs()
 	. = ..()
 	spawn(5 SECONDS)
@@ -319,13 +318,13 @@ SUBSYSTEM_DEF(chat)
 		for(var/_target in target)
 			var/client/client = CLIENT_FROM_VAR(_target)
 			if(client)
-				if(message["prefCheck"] && !CHECK_PREFS(client, message["prefCheck"]))
+				if(message["prefCheck"])
 					continue
 				LAZYADD(payload_by_client[client], list(message))
 		return
 	var/client/client = CLIENT_FROM_VAR(target)
 	if(client)
-		if(message["prefCheck"] && !CHECK_PREFS(client, message["prefCheck"]))
+		if(message["prefCheck"])
 			return
 		LAZYADD(payload_by_client[client], list(message))
 
@@ -532,7 +531,7 @@ SUBSYSTEM_DEF(chat)
 	var/client/C = extract_client(someone)
 	if(!C)
 		return
-	if(!SSprefbreak.initialized || !SSrentaldatums.initialized)
+	if(!SSrentaldatums.initialized)
 		to_chat(C, span_alert("Hold your horses! Parts of the game that this thing relies on hasn't initialized yet! Everything should be ready when the round starts. =3"))
 		return
 	var/datum/horny_tgui_holder/HTH = LAZYACCESS(horny_tguis, C.ckey)
@@ -899,56 +898,6 @@ SUBSYSTEM_DEF(chat)
 	// if we get here, we have an unsupported message mode, so just use Say
 	return fallback_boy // the boy is back in town
 
-/datum/controller/subsystem/chat/proc/build_flirt_datums()
-	if(LAZYLEN(flirts))
-		QDEL_LIST_ASSOC_VAL(flirts)
-	flirts = list()
-	flirts_all_categories = list()
-	for(var/flt in subtypesof(/datum/flirt))
-		new flt() // it knows what its do
-	flirts_all_categories.Insert(1, "All Flirts")
-
-/datum/controller/subsystem/chat/proc/run_directed_flirt(mob/living/flirter, mob/living/target, flirtkey)
-	if(!istype(flirter) ||!istype(target) || !flirtkey)
-		return
-	var/datum/flirt/flirt = LAZYACCESS(flirts, flirtkey)
-	if(!flirt)
-		return
-	return flirt.flirt_directed(flirter, target)
-
-/datum/controller/subsystem/chat/proc/run_aoe_flirt(mob/living/flirter, flirtkey)
-	if(!istype(flirter) ||!flirtkey)
-		return
-	var/datum/flirt/flirt = LAZYACCESS(flirts, flirtkey)
-	if(!flirt)
-		return
-	return flirt.flirt_aoe(flirter)
-
-/datum/controller/subsystem/chat/proc/flirt_occurred(mob/living/flirter, mob/living/target)
-	add_flirt_target(flirter, target) // flirter FLIRTED with target
-	add_flirt_recipient(flirter, target) // target WAS FLIRTED BY flirter
-	ui_interact(flirter)
-	// ui_interact(target)
-
-/datum/controller/subsystem/chat/proc/add_flirt_target(mob/living/flirter, mob/living/target)
-	if(!istype(flirter) ||!istype(target))
-		return
-	if(!flirter.ckey ||!target.ckey)
-		return
-	if(!flirter.client ||!target.client)
-		return
-	active_flirters[flirter.ckey] = target.ckey
-	return TRUE
-
-/datum/controller/subsystem/chat/proc/remove_flirt_target(mob/living/flirter)
-	if(!istype(flirter))
-		return
-	if(!flirter.ckey)
-		return
-	if(!flirter.client)
-		return
-	active_flirters -= flirter.ckey
-	return TRUE
 
 /datum/controller/subsystem/chat/proc/get_flirt_target(mob/living/flirter)
 	if(!istype(flirter))
@@ -1025,35 +974,6 @@ SUBSYSTEM_DEF(chat)
 	static_data["AllCategories"] = flirts_all_categories
 	return static_data
 
-/datum/controller/subsystem/chat/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
-	. = ..()
-	var/mob/living/flirter = ckey2mob(params["ReturnFlirterCkey"])
-	if(!flirter)
-		return // nobody flirted
-	var/datum/flirt/F = LAZYACCESS(flirts, params["ReturnFlirtKey"])
-	flirt_cooldowns[flirter.ckey] = world.time + flirt_cooldown_time
-	var/mob/living/target = ckey2mob(params["ReturnTargetCkey"] || get_flirt_target(flirter))
-	switch(action)
-		if("ClearFlirtTarget")
-			return remove_flirt_target(flirter)
-		if("GiveFlirtTargetItem")
-			return give_flirt_targetter_item(flirter)
-		if("PreviewFlirt")
-			if(!F)
-				return
-			return F.preview_flirt(flirter, target)
-		if("PreviewSound")
-			if(!F)
-				return
-			return F.preview_sound(flirter, target)
-		if("ClickedFlirtButton")
-			if(!F)
-				return
-			if(LAZYACCESS(flirt_cooldowns, flirter.ckey) < world.time)
-				to_chat(flirter, span_warning("Hold your horses! You're still working on that last flirt!"))
-				return
-			return F.give_flirter(flirter)
-
 /datum/controller/subsystem/chat/ui_state(mob/user)
 	return GLOB.always_state
 
@@ -1127,10 +1047,6 @@ SUBSYSTEM_DEF(chat)
 		var/mob/living/target = SSeconomy.quid2mob(href_list["reciever_quid"])
 		if(!target)
 			return
-		if(!flirter.client || !target.client)
-			return
-		SSchat.add_flirt_target(flirter, target)
-		SSchat.ui_interact(flirter)
 	if(href_list["INTERACT"])
 		var/mob/living/fricker = SSeconomy.quid2mob(href_list["sender_quid"])
 		if(!fricker)
@@ -1191,123 +1107,6 @@ SUBSYSTEM_DEF(chat)
 	chai.show_to(viewer)
 	return TRUE
 
-/datum/controller/subsystem/chat/proc/GetHornyThingDatum(mob/horny)
-	if(!istype(horny))
-		return
-	if(!horny.client)
-		return
-	var/quid = SSeconomy.extract_quid(horny)
-	if(!quid)
-		return
-	var/datum/horny_thing/thing = LAZYACCESS(horny_message_cache, quid)
-	if(!thing)
-		thing = new(horny)
-		horny_message_cache[quid] = thing
-	return thing
-
-/datum/controller/subsystem/chat/proc/GetHornyHistory(mob/horny)
-	if(!istype(horny))
-		return
-	if(!horny.client)
-		return
-	var/datum/horny_thing/thing = GetHornyThingDatum(horny)
-	if(!thing)
-		return
-	return thing.ShowHistory()
-
-/datum/controller/subsystem/chat/proc/StoreHornyMessage(mob/horny, message)
-	if(!istype(horny))
-		return
-	if(!horny.client)
-		return
-	var/datum/horny_thing/thing = GetHornyThingDatum(horny)
-	if(!thing)
-		return
-	thing.StoreMessage(message)
-
-/datum/controller/subsystem/chat/proc/StashHornyThing(mob/horny)
-	if(!istype(horny))
-		return
-	if(!horny.client)
-		return
-	var/datum/horny_thing/thing = GetHornyThingDatum(horny)
-	if(!thing)
-		return
-	thing.Stash()
-
-/datum/controller/subsystem/chat/proc/UnstashHornyThing(mob/horny)
-	if(!istype(horny))
-		return
-	if(!horny.client)
-		return
-	var/datum/horny_thing/thing = GetHornyThingDatum(horny)
-	if(!thing)
-		return
-	return thing.Unstash()
-
-/datum/horny_thing
-	var/quid = ""
-	var/obj/item/hand_item/subtle_catapult/sc
-	var/list/msgs = list()
-
-/datum/horny_thing/New(mob/horny)
-	. = ..()
-	quid = SSeconomy.extract_quid(horny)
-	sc = new()
-
-/datum/horny_thing/proc/StoreMessage(message)
-	msgs.Insert(1, message)
-	if(LAZYLEN(msgs) > 300)
-		msgs.len = 300 // juuuust in case
-
-/datum/horny_thing/proc/ShowHistory()
-	return msgs
-
-/datum/horny_thing/proc/Stash()
-	sc.moveToNullspace()
-
-/datum/horny_thing/proc/Unstash()
-	if(QDELETED(sc))
-		sc = new()
-	return sc
-
-/datum/controller/subsystem/chat/proc/flirt_debug_toggle()
-	TOGGLE_VAR(flirt_debug)
-	build_flirt_datums()
-	message_admins("Flirt debug [flirt_debug?"on":"off"]")
-
-/datum/controller/subsystem/chat/proc/give_flirt_targetter_item(mob/living/flirter)
-	if(!isliving(flirter))
-		return
-	if(flirter.get_active_held_item() && flirter.get_inactive_held_item())
-		to_chat(flirter, span_warning("My hands are too full to flirt! Yes, you need your hands to flirt."))
-		return
-
-	var/obj/item/hand_item/flirt_targetter/hiya = new(flirter)
-
-	if(flirter.put_in_hands(hiya)) // NOTE: put_in_hand is MUCH different from put_in_hands - NOTE THE S
-		to_chat(flirter, span_notice("Pick someone you want to flirt with! Just click on them while holding this, and it'll target them."))
-		return TRUE
-	else
-		to_chat(flirter, span_warning("Something went wrong! Try a different approach~"))
-		qdel(hiya)
-
-/datum/controller/subsystem/chat/proc/can_usr_flirt_with_this(mob/A)
-	if(!isliving(usr)) // fight me
-		to_chat(usr, span_hypnophrase("Touch grass, you ghostly fucker. Spawn in to swap spit with them."))
-		return
-	if(isanimal(A) && !A.client)
-		if(prob(1))
-			to_chat(usr, span_hypnophrase("You're having a white woman moment."))
-		else if(prob(10))
-			to_chat(usr, span_hypnophrase("They probably wouldn't pass the Harkness test."))
-		else
-			to_chat(usr, span_hypnophrase("They're not in the right mood for flirting."))
-		return
-	// if(A == usr)
-	// 	to_chat(usr, span_hypnophrase("I take a deep breath and psyche yourself up to flirt with someone other than yourself for a change. You got this, tiger!"))
-	// 	return
-	return TRUE
 
 /mob/verb/setup_coolchat()
 	set name = "Setup VisualChat"
@@ -1318,40 +1117,6 @@ SUBSYSTEM_DEF(chat)
 	set name = "Setup Profile Pics"
 	set category = "Preferences"
 	SSchat.HornyPreferences(src)
-
-/mob/verb/check_out(mob/A as mob in view())
-	set name = "Flirt with"
-	set category = "IC"
-
-	if(!SSchat.can_usr_flirt_with_this(A))
-		return
-	to_chat(src, span_notice("I get ready to flirt with [A]. What will you do?"))
-	to_chat(src, span_notice("HOW TO USE: Click on the emote you want to use, and it'll direct a flirtatious message toward them! That's it! \
-		Be sure to respect their OOC preferences, don't be a creep (unless they like it), and <i>have fun!</i>"))
-	SSchat.add_flirt_target(src, A)
-	SSchat.ui_interact(src)
-
-/datum/emote/living/flirtlord
-	key = "flirt"
-	no_message = TRUE // we'll handle it from here =3
-
-/datum/emote/living/flirtlord/run_emote(mob/user, params) //Player triggers the emote
-	if(isdead(user))
-		to_chat(user, span_warning("Nobody is interested in your cold dead heart, try rising from the grave with a fistful of flowers, should impress someone."))
-		return
-	if(user.stat == DEAD)
-		to_chat(user, span_warning("You've got better things to do than flirt, such as being dead."))
-		return
-	if(LAZYLEN(params))
-		var/whichm = text2num(params)
-		if(isnum(whichm) && whichm > 0 && whichm <= LAZYLEN(SSchat.flirtsByNumbers))
-			var/datum/flirt/F = LAZYACCESS(SSchat.flirtsByNumbers, whichm)
-			if(F)
-				return F.give_flirter(user)
-	to_chat(user, span_notice("I get ready to flirt. What will you do? And who with?"))
-	to_chat(user, span_notice("HOW TO USE: Click on the emote you want to use, and it'll give you a thing in your hand! Just click on whoever you want to send a flirtatious message to, or just use it in hand to send a message to everyone nearby. That's it! \
-		Be sure to respect their OOC preferences, don't be a creep (unless they like it), and <i>have fun!</i>"))
-	SSchat.ui_interact(user)
 
 
 /datum/emoticon_bank
@@ -1678,14 +1443,6 @@ SUBSYSTEM_DEF(chat)
 		popup.set_content(dat)
 		popup.open()
 		return TRUE
-	if(action == "view_flist")
-		if(viowed)
-			to_chat(viower, span_notice("Opening F-list..."))
-			SEND_SIGNAL(viowed, COMSIG_FLIST, viower)
-			return TRUE
-		else
-			to_chat(viower, span_alert("Couldn't find that character's F-list!"))
-			return TRUE
 	return TRUE
 
 /datum/character_inspection/ui_state(mob/user)
@@ -1736,8 +1493,6 @@ SUBSYSTEM_DEF(chat)
 	/// then, the user's images
 	SSchat.SanitizeUserImages(P)
 	SSchat.SanitizeUserPreferences(P)
-	data["AutoContrast"] = CHECK_PREFS(P, USE_AUTO_CONTRAST)
-	data["SeeOthers"] = CHECK_PREFS(P, SHOW_ME_HORNY_FURRIES)
 	data["UserImages"] = P.ProfilePics
 	data["UserCKEY"] = user.ckey
 	data["Clipboard"] = clipboard.Copy()
@@ -1778,8 +1533,8 @@ SUBSYSTEM_DEF(chat)
 				message2say = "%Allow me to sing the song of my people: ACK ACAKCHA AKGH CKCKHHGN YIP YIP YAKCGH EE EI EEI \
 				GEKKER GEKKER ACK GACK AKCH TCHOFF AHC IA IA TEKALI-LI RLYEA CTHULHU FTAGHN YIPYIP! And now I'm done. Hi."
 			if(MODE_ASK)
-				message2say = "Hello? Is this thing on? So tell me, how many licks does it take to get to the center of a vixen? \
-				Can you help me find out? Wanna go on a date and help em find out how many licks it takes to get to the center of a vixen? \
+				message2say = "Hello? Is this thing on? So tell me? \
+				Can you help me find out? \
 				What if it's more than one? What if it's less than one? What if it's exactly one? And now I'm done? Hi?"
 			if(MODE_EXCLAIM)
 				message2say = "Wow! I'm so excited! I'm so excited to be here! I'm so excited to be talking to you! \
@@ -2108,24 +1863,6 @@ SUBSYSTEM_DEF(chat)
 			else
 				to_chat(M, span_notice("You will now see boring normal chat messages!"))
 			. = CHANGED_NOTHING
-		if("OpenPerchance")
-			var/yiffme = alert(
-				M,
-				"This link will take you to an AI furry profile picture generator, hosted at https://perchance.org/furry-ai . \
-				Be aware that the site will happily generate NSFW images, so be careful when using it. \
-				Proceed?",
-				"Okay",
-				"Okay",
-				"Cancel",
-			)
-			if(yiffme == "Okay")
-				M << link("https://perchance.org/furry-ai")
-				to_chat(M, span_notice("Opening Perchance..."))
-				to_chat(M, span_notice("If you're not redirected, please click here: <a href='https://perchance.org/furry-ai'>Perchance</a>"))
-				. = CHANGED_NOTHING
-			else
-				to_chat(M, span_alert("Never mind!!"))
-				. = CHANGED_NOTHING
 		if("OpenCatbox")
 			var/yiffme = alert(
 				M,

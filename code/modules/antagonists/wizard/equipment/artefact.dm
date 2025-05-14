@@ -168,14 +168,6 @@
 		span_info("You kneel[M == user ? null : " next to [M]"] and let them gaze into the [src]."))
 
 	scryden = TRUE
-	if(do_after(user, 10 SECONDS, target = M))
-		M.reagents?.add_reagent(/datum/reagent/fermi/astral, 3) 
-		to_chat(M, span_notice("As [user]'s holds out the [src] infront of you, you can see yourself staring back like a mirror world.. and then you both come together!"))
-		scryden = FALSE
-	else
-		to_chat(user, span_notice("Your scrying was interrupted."))
-		scryden = FALSE
-
 /////////////////////////////////////////Necromantic Stone///////////////////
 
 /obj/item/necromantic_stone

@@ -289,7 +289,7 @@ const LowerRowBar = (props, context) => {
         <Button
           fluid
           icon="images"
-          content="Get Profile Pics"
+          content="Useless button"
           onClick={() => act('OpenPerchance', {
             UserCkey: UserCKEY,
           })} />

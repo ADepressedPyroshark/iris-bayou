@@ -67,13 +67,6 @@
 	var/dist_between_em = get_dist(tatted, viewer)
 	if(dist_between_em > TATTOO_VISIBILITY_RANGE)
 		return FALSE
-	var/privacy_invaded = invade_privacy()
-	if(privacy_invaded == TRUE)
-		return TRUE // bits are out and visible
-	if(privacy_invaded == TATTOO_SUPER_HIDDEN)
-		return FALSE // the boobie fell off :c
-	if(privacy_invaded == TATTOO_NOT_PRIVATE && dist_between_em <= 1)
-		return TRUE // close up, and the tat isnt private? see it
 	if(LAZYLEN(tatted.clothingonpart(owner_limb)))
 		return FALSE // uncovered? uncovered
 	return TRUE
@@ -83,37 +76,6 @@
 		qdel(src)
 		return
 	addtimer(CALLBACK(src,PROC_REF(fade_tattoo)), fade_time)
-
-/// Is the tattoo somewhere really private? So you dont examine someone in power armor and find FOXYGRANDMA above their ass
-/// A really in-depth check through a person's privates to see if their relevant bits are, in fact, visible
-/datum/tattoo/proc/invade_privacy()
-	if(extra_private)
-		return FALSE // extra private? *must* be revealed
-	if(!owner_limb)
-		return FALSE // shouldnt happen
-
-	var/mob/living/carbon/human/grundlehaver = owner_limb?.owner
-	if(!grundlehaver)
-		return TRUE // how the heck did you sever a chest? nice
-	var/obj/item/organ/genital/grundle
-	switch(tat_location)
-		if(TATTOO_TRAMP_STAMP, TATTOO_LEFT_ASS, TATTOO_RIGHT_ASS) // Butt tattoo?
-			grundle = grundlehaver.has_butt()
-		if(TATTOO_WOMB_TATTOO)
-			grundle = grundlehaver.has_vagina()
-			if(!grundle)
-				grundle = grundlehaver.has_penis()
-			if(!grundle)
-				grundle = grundlehaver.has_balls() // fun fact the womb is stored in the balls
-		if(TATTOO_LEFT_BOOB, TATTOO_RIGHT_BOOB)
-			grundle = grundlehaver.has_breasts()
-		else
-			return TATTOO_NOT_PRIVATE // wasnt private to begin with lol
-	if(!istype(grundle)) // pro-pain
-		return TATTOO_SUPER_HIDDEN // no ass, no tat
-	if(grundle in grundlehaver.exposed_genitals)
-		return TRUE // ur cock out
-	return grundle.is_exposed() // ur cock out?
 
 /datum/tattoo/proc/get_desc(mob/viewer, check_vis = TRUE)
 	if(!owner_limb)

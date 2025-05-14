@@ -88,12 +88,6 @@
 	item = /obj/effect/spawner/lootdrop/f13/seedspawner
 	cost = 4
 
-/datum/supplykit_item/animals/fever
-	name = "Fever Blossom"
-	desc = "A mutated passion flower that has developed strong aphrodisiac properties."
-	item = /obj/item/reagent_containers/food/snacks/grown/fever_blossom
-	cost = 1
-
 /datum/supplykit_item/animals/capturedevice
 	name = "Capture Device"
 	desc = "A compact device used for transporting friendly creatures in a small package."

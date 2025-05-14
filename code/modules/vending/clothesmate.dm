@@ -224,26 +224,3 @@
 					/obj/item/clothing/under/rank/mailman = 1,
 					/obj/item/clothing/suit/jacket/leather = 1,
 					/obj/item/clothing/suit/jacket/leather/overcoat = 1)
-
-/obj/machinery/vending/clothing/heaven
-	name = "Heaven's Night ClothesMate"
-	desc = "A vending machine supplying club equipment. To put it lightly."
-	//product_slogans = "Do I look like your girlfriend?;I don't look like a ghost, do I?;Feel how warm I am?;It doesn't matter who I am.;Come and get me.;"
-	vend_reply = "Hurry back!"
-	products = list(/obj/item/tattoo_gun = 5,
-					/obj/item/tattoo_holder/blank = 20,
-					/obj/item/tattoo_holder/blank/temporary = 20,
-					/obj/item/clothing/under/f13/fprostitute = 5,
-					/obj/item/clothing/under/f13/raiderharness = 3,
-					/obj/item/clothing/under/f13/ravenharness = 3,
-					/obj/item/clothing/suit/armor/outfit/overalls/sexymaid = 5,
-					/obj/item/clothing/head/maid = 5,
-					/obj/item/clothing/under/costume/maid = 5,
-					/obj/item/clothing/under/janimaid = 5,
-					/obj/item/clothing/under/rank/civilian/janitor/maid = 5,
-					/obj/item/clothing/suit/armor/light/duster/brahmin = 3,
-					/obj/item/clothing/head/helmet/f13/brahmincowboyhat = 3,
-					/obj/item/restraints/handcuffs/fake/kinky = 5,
-					/obj/item/clothing/mask/muzzle = 5,
-					/obj/item/clothing/suit/straight_jacket = 5,
-					/obj/item/melee/chainofcommand/fake = 5)

@@ -402,9 +402,6 @@
 		holder.add_reagent(/datum/reagent/consumable/ethanol/neuroweak, cached_volume)
 */
 
-/datum/chemical_reaction/neurotoxin/FermiExplode(datum/reagents, atom/my_atom, volume, temp, pH)//reduced size
-	volume = volume/10
-	..()
 
 /datum/chemical_reaction/snowwhite
 	name = "Snow White"

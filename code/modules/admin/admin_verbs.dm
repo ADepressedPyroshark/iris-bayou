@@ -106,11 +106,7 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/datum/admins/proc/admin_who2,
 	/datum/admins/proc/test_dailies,
 	/datum/admins/proc/make_cool_payload,
-	/client/proc/test_horny_furries,
-	/client/proc/show_character_directory,
-	/datum/admins/proc/test_hornychat_prefs,
 	/datum/admins/proc/kinkshame, //CIT CHANGE - Adds kinkshaming
-	/datum/admins/proc/grope_shotglass,
 	/datum/admins/proc/edit_commanders,
 	/proc/commander_me,
 	)
@@ -443,11 +439,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			mob.invisibility = INVISIBILITY_OBSERVER
 			to_chat(mob, "<span class='adminnotice'><b>Invisimin on. You are now as invisible as a ghost.</b></span>")
 
-/client/proc/test_horny_furries()
-	set name = "hornyfurry"
-	set category = "Debug"
-	set desc = "spams you with horny furries"
-	SSchat.TestHorny()
 
 /client/proc/toggle_experimental_clickdrag_thing()
 	set name = "Toggle Clickdrag Changes"
@@ -1060,41 +1051,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	message_admins("[ADMIN_TPMONTY(usr)] has granted a 1UP to [keytorez].")
 
 /// Never gonna give one up, never gonna give one down
-/datum/admins/proc/grope_shotglass()
-	set category = "Admin.Game"
-	set name = "Let people grope wierd things"
-
-	if(!check_rights(R_ADMIN))
-		message_admins("[ADMIN_TPMONTY(usr)] tried to use mess with grope_shotglass() without admin perms.")
-		log_admin("INVALID ADMIN PROC ACCESS: [key_name(usr)] tried to use mess with grope_shotglass() without admin perms.")
-		return
-
-	var/list/ppl = list()
-	for(var/kye in GLOB.directory)
-		var/client/C = GLOB.directory[kye]
-		if(!ismob(C.mob))
-			continue
-		ppl[C.mob.name] = kye
-	
-	var/whotorez = input(usr, "Who do you want to let grope wierd things?", "Give a hand") as null|anything in ppl
-	if(!whotorez)
-		to_chat(usr, "Nevermind then.")
-		return
-	if(whotorez in GLOB.shotglass_gropers)
-		GLOB.shotglass_gropers -= ppl[whotorez]
-		to_chat(usr, "[whotorez] can no longer grope shotglasses.")
-		var/mob/whomst = ckey2mob(ppl[whotorez])
-		if(whomst)
-			to_chat(whomst, "Oh you can't grope shotglasses anymore. dang")
-		log_admin("[key_name(usr)] stopped letting [whotorez] [ppl[whotorez]] grope just about anything.")
-	else
-		GLOB.shotglass_gropers -= ppl[whotorez]
-		to_chat(usr, "[whotorez] can now grope shotglasses. yeah.")
-		var/mob/whomst = ckey2mob(ppl[whotorez])
-		if(whomst)
-			to_chat(whomst, "Hey you can grope shotglasses now.")
-		log_admin("[key_name(usr)] let [whotorez] [ppl[whotorez]] grope just about anything.")
-
 /datum/admins/proc/change_view_range()
 	set category = "Admin.Game"
 	set name = "Change Global View Range"
@@ -1370,14 +1326,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		return
 	GLOB.cooltext_pro.Open(usr)
 
-/datum/admins/proc/test_hornychat_prefs()
-	set category = "Debug"
-	set name = "Access Hornychat"
-	set desc = "Opens the Hornychat preferences panel."
-
-	SSchat.HornyPreferences(usr)
-	to_chat(usr, "Hornychat preferences opened! Hopefully!")
-
 GLOBAL_DATUM_INIT(cooltext_pro, /datum/shrimpletext, new)
 
 /datum/shrimpletext
@@ -1495,10 +1443,6 @@ GLOBAL_DATUM_INIT(vap, /datum/visualchat_admin_panel, new)
 					a custom message mode. The mode is set to [replacetext(msgmode, ":","")]. If the previous sentence was \
 					cut off, please make a note of it. Cool huh? And now I'm done. Hi. [msgmode]"
 					message2say2 = "[msgmode]"
-			var/msgmess = SSchat.PreviewHornyFurryDatingSimMessage(C.mob, null, message2say, FALSE)
-			if(message2say2)
-				msgmess += "<p>[SSchat.PreviewHornyFurryDatingSimMessage(C.mob, null, message2say2, FALSE)]</p>"
-			perp_previewmsgs += list(list("Mode" = msgmode, "Message" = msgmess))
 		var/list/monkey = list(
 			"PerpCKEY" = their_ckey,
 			"PerpName" = their_name,
@@ -1545,14 +1489,6 @@ GLOBAL_DATUM_INIT(vap, /datum/visualchat_admin_panel, new)
 		if("ResetAll")
 			for(var/list/entry in pics)
 				. &= modify_entry(P, entry["Mode"], flagge, TRUE)
-	if(.)
-		SSchat.CoordinateSettingsAndPics(ckey, 2) // eslint-disable-line no-magic-numbers
-		SSchat.SanitizeUserImages(ckey)
-		SSchat.SanitizeUserPreferences(ckey)
-		P.save_character()
-		update_static_data(user, ui)
-	else
-		to_chat(user, span_warning("Something went wrong!!!"))
 
 /datum/visualchat_admin_panel/proc/modify_entry(datum/preferences/P, mode, whatpart, tellem)
 	. = TRUE
@@ -1589,10 +1525,6 @@ GLOBAL_DATUM_INIT(vap, /datum/visualchat_admin_panel, new)
 
 /datum/visualchat_admin_panel/proc/reset_verb_blank(list/entry)
 	entry["CustomBlankVerb"] = ""
-	return TRUE
-
-/datum/visualchat_admin_panel/proc/reset_settings(list/settiong, mode)
-	settiong = GLOB.default_horny_settings.Copy()
 	return TRUE
 
 

@@ -108,7 +108,7 @@
 /// Set to 0 to force automatic crew transfer after the 'vote_autotransfer_initial' elapsed.
 /// Set to -1 to disable the maximum extensions cap.
 /datum/config_entry/number/vote_autotransfer_maximum
-	config_entry_value = 2
+	config_entry_value = -1
 	min_val = 1
 
 /datum/config_entry/flag/default_no_vote	// vote does not default to nochange/norestart
