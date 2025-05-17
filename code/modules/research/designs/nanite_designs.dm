@@ -134,14 +134,14 @@
 	category = list("Utility Nanites")
 
 ////////////////////MEDICAL NANITES//////////////////////////////////////
-/*
+
 /datum/design/nanites/regenerative
 	name = "Accelerated Regeneration"
 	desc = "The nanites boost the host's natural regeneration, increasing their healing speed."
 	id = "regenerative_nanites"
 	program_type = /datum/nanite_program/regenerative
 	category = list("Medical Nanites")
-*/ 
+
 /datum/design/nanites/regenerative_advanced
 	name = "Bio-Reconstruction"
 	desc = "The nanites manually repair and replace organic cells, acting much faster than normal regeneration. \
