@@ -297,50 +297,6 @@
 /datum/gear/backpack/blackandwhiteskirt
 	name = "Black and White Checker Skirt"
 	path = /obj/item/clothing/accessory/checkerskirt
-	cost = 0
-/datum/gear/backpack/maidskirt
-	name = "Maid Skirt"
-	path = /obj/item/clothing/accessory/maidskirt
-	cost = 0
-/datum/gear/backpack/plaidredlongskirt
-	name = "Plaid Skirt - Red, Long"
-	path = /obj/item/clothing/accessory/plaidredlongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidredshortskirt
-	name = "Plaid Skirt - Red, Short"
-	path = /obj/item/clothing/accessory/plaidredshortskirt
-	cost = 0
-
-/datum/gear/backpack/plaidbluelongskirt
-	name = "Plaid Skirt - Blue, Long"
-	path = /obj/item/clothing/accessory/plaidbluelongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidblueshortskirt
-	name = "Plaid Skirt - Blue, Short"
-	path = /obj/item/clothing/accessory/plaidblueshortskirt
-	cost = 0
-
-/datum/gear/backpack/plaidpurplelongskirt
-	name = "Plaid Skirt - Purple, Long"
-	path = /obj/item/clothing/accessory/plaidpurplelongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidpurpleshortskirt
-	name = "Plaid Skirt - Purple, Short"
-	path = /obj/item/clothing/accessory/plaidpurpleshortskirt
-	cost = 0
-
-/datum/gear/backpack/plaidgreenlongskirt
-	name = "Plaid Skirt - Green, Long"
-	path = /obj/item/clothing/accessory/plaidgreenlongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidgreenshortskirt
-	name = "Plaid Skirt - Green, Short"
-	path = /obj/item/clothing/accessory/plaidgreenshortskirt
-	cost = 0
 
 /datum/gear/backpack/engineskirt
 	name = "Orange and Yellow Skirt"
