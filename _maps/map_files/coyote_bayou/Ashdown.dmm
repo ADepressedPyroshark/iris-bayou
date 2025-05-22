@@ -8161,9 +8161,6 @@
 /obj/structure/bed/mattress{
 	icon_state = "mattress2"
 	},
-/obj/effect/decal/cleanable/cum{
-	pixel_y = 5
-	},
 /obj/effect/decal/cleanable/blood/drip,
 /obj/item/restraints/handcuffs,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -29243,13 +29240,10 @@
 /area/f13/wasteland)
 "mPp" = (
 /obj/structure/closet,
-/obj/item/key/bcollar,
 /obj/item/key/collar,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/electropack/shockcollar,
 /obj/item/electropack/shockcollar,
-/obj/item/electropack/shockcollar/explosive,
-/obj/item/electropack/shockcollar/explosive,
 /obj/item/assembly/signaler/advanced,
 /obj/item/assembly/signaler/advanced,
 /turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust,
@@ -48680,13 +48674,6 @@
 	icon_state = "floorrusty"
 	},
 /area/f13/building)
-"vqc" = (
-/obj/structure/table/wood/settler,
-/obj/structure/fence/pole_b,
-/turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
-	color = "#d7d7d7"
-	},
-/area/f13/bar/ashdown)
 "vqd" = (
 /obj/structure/table_frame,
 /obj/item/shard,
@@ -50463,14 +50450,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/indestructible/ground/outside/dirt,
 /area/f13/wasteland)
-"wjs" = (
-/obj/structure/table/wood/settler,
-/obj/item/restraints/handcuffs/fake/kinky,
-/obj/item/restraints/handcuffs/fake/kinky,
-/turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
-	color = "#d7d7d7"
-	},
-/area/f13/bar/ashdown)
 "wjt" = (
 /obj/structure/flora/tree/tall{
 	icon_state = "tree_3"
@@ -53924,16 +53903,6 @@
 /obj/structure/obstacle/old_locked_door,
 /turf/open/floor/f13/wood,
 /area/f13/building)
-"xPe" = (
-/obj/structure/table/wood/settler,
-/obj/structure/railing{
-	dir = 1
-	},
-/obj/structure/fence/pole_t,
-/turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
-	color = "#d7d7d7"
-	},
-/area/f13/bar/ashdown)
 "xPf" = (
 /obj/structure/decoration/rag{
 	icon_state = "skin"
@@ -54167,7 +54136,6 @@
 	pixel_y = 5
 	},
 /mob/living/simple_animal/hostile/renegade,
-/obj/effect/decal/cleanable/semen,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plasteel/f13{
 	icon_state = "whitebluerustychess"
@@ -116849,7 +116817,7 @@ btP
 mYK
 lzn
 fOH
-wjs
+jvS
 btP
 gMW
 kOR
@@ -118130,8 +118098,8 @@ sbg
 sbg
 cCh
 dyP
-xPe
-vqc
+bJD
+jvS
 jvS
 fOH
 fOH
