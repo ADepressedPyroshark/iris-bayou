@@ -109,7 +109,7 @@
 #define EMOTE_HEADER_TEXT "\
 	The Following Chat Functions Exist \n\
 	- _text_ underlines text, +text+ bolds text, and |text| italicizes text. \n\
-	-- Works in Emote, Subtle, Say, Whisper and Radio chat. \n\
+	-- Works in Emote, Say, Whisper and Radio chat. \n\
 	\n\
 	- %text lets you siiiing. \n\
 	\n\

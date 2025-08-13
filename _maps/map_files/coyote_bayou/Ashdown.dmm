@@ -8962,12 +8962,6 @@
 /obj/structure/flora/tree/oak_two,
 /turf/open/indestructible/ground/outside/dirt,
 /area/f13/caves)
-"dSf" = (
-/obj/structure/sign/poster/prefall/poster61{
-	pixel_y = 30
-	},
-/turf/open/floor/carpet/royalblack,
-/area/f13/bar/ashdown)
 "dSL" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
@@ -10354,17 +10348,6 @@
 	},
 /turf/closed/wall/mineral/brick,
 /area/f13/building)
-"eAz" = (
-/obj/structure/sign/poster/contraband/pinup_topless{
-	pixel_x = 32
-	},
-/obj/machinery/light{
-	dir = 4
-	},
-/turf/open/floor/f13/wood{
-	icon_state = "housewood2"
-	},
-/area/f13/bar/ashdown)
 "eAA" = (
 /obj/structure/chair/sofa{
 	dir = 1
@@ -17733,14 +17716,6 @@
 /obj/structure/flora/ausbushes/stalkybush,
 /turf/open/indestructible/ground/outside/dirt,
 /area/f13/caves)
-"hQe" = (
-/obj/structure/sign/poster/prefall/poster61{
-	pixel_x = 32
-	},
-/turf/open/floor/f13/wood{
-	icon_state = "housewood2"
-	},
-/area/f13/bar/ashdown)
 "hQj" = (
 /turf/open/indestructible/ground/outside/sidewalk{
 	icon_state = "horizontaloutermain0"
@@ -18271,12 +18246,6 @@
 /area/f13/wasteland/city)
 "ibV" = (
 /obj/structure/closet/cabinet,
-/obj/item/clothing/under/stripeddress,
-/obj/item/clothing/head/maid,
-/obj/item/clothing/head/maid,
-/obj/item/clothing/under/misc/stripper/mankini,
-/obj/item/clothing/under/misc/stripper/mankini,
-/obj/item/clothing/under/misc/stripper,
 /turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
 	color = "#d7d7d7"
 	},
@@ -27595,15 +27564,11 @@
 /obj/item/clothing/under/redeveninggown,
 /obj/item/clothing/head/nun_hood,
 /obj/item/clothing/suit/chaplain/nun,
-/obj/item/clothing/under/maid,
 /obj/machinery/light{
 	dir = 4
 	},
 /obj/item/clothing/under/misc/gear_harness,
 /obj/item/clothing/under/misc/gear_harness,
-/obj/item/clothing/under/misc/stripper/green,
-/obj/item/clothing/under/misc/stripper/green,
-/obj/item/clothing/under/misc/stripper,
 /turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
 	color = "#d7d7d7"
 	},
@@ -35096,9 +35061,6 @@
 /turf/open/floor/carpet/purple,
 /area/f13/building/abandoned)
 "prl" = (
-/obj/effect/step_trigger/player_choice_log{
-	question = "Welcome to Ashdown's Bar, this location is considered a public 'free erp' area where players can safetly choose to be lewd in public without worry of breaking peoples prefs.  This means that you may see things you are not personally interested within, though the rules for player consent and no underaged play still stand.  Do you wish to continue onwards?"
-	},
 /obj/structure/curtain{
 	color = "#5c131b"
 	},
@@ -45012,9 +44974,6 @@
 /turf/open/indestructible/ground/outside/desert,
 /area/f13/wasteland)
 "tLP" = (
-/obj/structure/sign/poster/contraband/pinup_topless{
-	pixel_x = 32
-	},
 /obj/item/twohanded/required/kirbyplants/random,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light{
@@ -116301,7 +116260,7 @@ btP
 btP
 btP
 btP
-inU
+wML
 btP
 btP
 btP
@@ -116542,9 +116501,9 @@ rYb
 rYb
 rYb
 cYp
-eAz
+dvK
 eJW
-hQe
+eJW
 eJW
 eJW
 dvK
@@ -116807,7 +116766,7 @@ hip
 oWE
 btP
 btP
-dSf
+wyW
 wyW
 wyW
 ghD
