@@ -297,50 +297,6 @@
 /datum/gear/backpack/blackandwhiteskirt
 	name = "Black and White Checker Skirt"
 	path = /obj/item/clothing/accessory/checkerskirt
-	cost = 0
-/datum/gear/backpack/maidskirt
-	name = "Maid Skirt"
-	path = /obj/item/clothing/accessory/maidskirt
-	cost = 0
-/datum/gear/backpack/plaidredlongskirt
-	name = "Plaid Skirt - Red, Long"
-	path = /obj/item/clothing/accessory/plaidredlongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidredshortskirt
-	name = "Plaid Skirt - Red, Short"
-	path = /obj/item/clothing/accessory/plaidredshortskirt
-	cost = 0
-
-/datum/gear/backpack/plaidbluelongskirt
-	name = "Plaid Skirt - Blue, Long"
-	path = /obj/item/clothing/accessory/plaidbluelongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidblueshortskirt
-	name = "Plaid Skirt - Blue, Short"
-	path = /obj/item/clothing/accessory/plaidblueshortskirt
-	cost = 0
-
-/datum/gear/backpack/plaidpurplelongskirt
-	name = "Plaid Skirt - Purple, Long"
-	path = /obj/item/clothing/accessory/plaidpurplelongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidpurpleshortskirt
-	name = "Plaid Skirt - Purple, Short"
-	path = /obj/item/clothing/accessory/plaidpurpleshortskirt
-	cost = 0
-
-/datum/gear/backpack/plaidgreenlongskirt
-	name = "Plaid Skirt - Green, Long"
-	path = /obj/item/clothing/accessory/plaidgreenlongskirt
-	cost = 0
-
-/datum/gear/backpack/plaidgreenshortskirt
-	name = "Plaid Skirt - Green, Short"
-	path = /obj/item/clothing/accessory/plaidgreenshortskirt
-	cost = 0
 
 /datum/gear/backpack/engineskirt
 	name = "Orange and Yellow Skirt"
@@ -405,25 +361,6 @@
 /datum/gear/backpack/id
 	name = "Reprogramable ID"
 	path =  /obj/item/card/id/selfassign
-	cost = 0
-
-/datum/gear/backpack/twocolorcollar
-	name = "Two Color Lockable Leather Collar"
-	path = /obj/item/clothing/neck/petcollar/choker
-
-/datum/gear/backpack/onecolorcollar
-	name = "One Color Lockable Leather Collar"
-	path = /obj/item/clothing/neck/petcollar/locked
-	cost = 0
-
-/datum/gear/backpack/shockcollar
-	name = "Kinky Shock Collar"
-	path = /obj/item/electropack/shockcollar
-	cost = 0
-
-/datum/gear/backpack/shockcollarshimusa
-	name = "Kinky Shock Collar w/ Shackles"
-	path = /obj/item/electropack/shockcollar/shimsusa_shackles
 	cost = 0
 
 //Cameras

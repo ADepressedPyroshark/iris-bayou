@@ -48,15 +48,13 @@ SUBSYSTEM_DEF(statpanels)
 	while(length(currentrun))
 		var/client/target = currentrun[length(currentrun)]
 		currentrun.len--
-		if(!target.statbrowser_ready)
-			continue
-		if(target.stat_tab == "Status")
-			var/ping_str = url_encode("Ping: [round(target.lastping, 1)]ms (Average: [round(target.avgping, 1)]ms)")
-			var/other_str = url_encode(json_encode(target.mob.get_status_tab_items()))
-			var/adminstuff = ""
-			// if(SStime_track.debug_just_flat_out_lie_to_the_players && check_rights_for(target, R_ADMIN))
-			// 	adminstuff = url_encode("The Real TiDi: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)")
-			target << output("[encoded_global_data];[ping_str];[other_str][adminstuff]", "statbrowser:update")
+	// Send map/server data to ALL clients (cheap operation)
+		// Only send expensive per-mob data when viewing Status tab
+		var/ping_str = url_encode("Ping: [round(target.lastping, 1)]ms (Average: [round(target.avgping, 1)]ms)")
+		var/other_str = target.stat_tab == "Status" ? url_encode(json_encode(target.mob.get_status_tab_items())) : url_encode(json_encode(list()))
+		var/adminstuff = ""
+		target << output("[encoded_global_data];[ping_str];[other_str];[adminstuff]", "statbrowser:update")
+
 		if(!target.holder)
 			target << output("", "statbrowser:remove_admin_tabs")
 		else
@@ -178,7 +176,6 @@ SUBSYSTEM_DEF(statpanels)
 		return
 	discard_horny_demographic(C, FALSE)
 	var/sex = M.gender // remind me to add in more options than BYOND's default
-	var/tbs = C.prefs.tbs // Turner Broadcasting System (RIP the conan show)
 	var/who_i_kiss = C.prefs.kisser // smoonch
 	switch(sex)
 		if(MALE)
@@ -189,13 +186,6 @@ SUBSYSTEM_DEF(statpanels)
 			cached_herms |= CKEY
 		else
 			cached_them |= CKEY
-	switch(tbs)
-		if(TBS_BOTTOM)
-			cached_bottoms |= CKEY
-		if(TBS_TOP)
-			cached_tops |= CKEY
-		if(TBS_SHOES) // tops, bottoms, shoes
-			cached_switches |= CKEY
 	switch(who_i_kiss)
 		if(KISS_BOYS)
 			cached_boykissers |= CKEY
@@ -292,9 +282,9 @@ SUBSYSTEM_DEF(statpanels)
 			majority_sex = "Anysexes"
 	
 	/// There are a lot of Boykissing Female Tops on!
-	var/majority_string = "The server has a lot of [majority_kisser], and [majority_sex], and [majority_tbs] on!"
+	var/majority_string = "The server has a lot of [majority_kisser], and [majority_sex] on!"
 	/// milk yeah of course
-	var/desired_string = "If you're looking for a good time, you should play \a [most_desired_sex] [most_desired_tbs]!"
+	var/desired_string = "If you're looking for a good time, you should play!"
 	nashs_most_wanted = desired_string
 	the_majority = majority_string
 	/// all done!

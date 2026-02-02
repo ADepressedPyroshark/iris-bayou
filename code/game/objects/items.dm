@@ -181,7 +181,7 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	var/list/hud_actions
 
 	var/list/item_upgrades = list()
-	var/max_upgrades = 5 // was three now five because the amount of mods you need/want has significantly increased. Love you!
+	var/max_upgrades = 7 // was three now five now 7 because the amount of mods you need/want has significantly increased. Love you!
 
 	/// extra special transform
 	var/matrix/special_transform
@@ -555,7 +555,7 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 
 // afterattack() and attack() prototypes moved to _onclick/item_attack.dm for consistency
 
-/obj/item/proc/talk_into(atom/movable/M, message, channel, list/spans, datum/language/language, datum/rental_mommy/chat/momchat)
+/obj/item/proc/talk_into(atom/movable/M, message, channel, list/spans, datum/language/language)
 	return ITALICS | REDUCE_RANGE
 
 /obj/item/proc/dropped(mob/user)
@@ -1321,7 +1321,27 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 /obj/item/attack(mob/living/M, mob/living/user, attackchain_flags = NONE, damage_multiplier = 1, damage_override)
 	// Check if the user is behind the target
 	if(get_dir(user, M) == M.dir && isliving(M))
-		damage_multiplier = backstab_multiplier // Apply the backstab multiplier
+		var/int_mod = 1
+		switch(user.get_stat(STAT_INTELLIGENCE)) // COOLSTAT IMPLEMENTATION: INTELLIGENCE
+			if(0, 1)
+				int_mod = -1 // lol
+			if(2)
+				int_mod = 1
+			if(3)
+				int_mod = 1
+			if(4)
+				int_mod = 1
+			if(5)
+				int_mod = 1
+			if(6)
+				int_mod = 1.1
+			if(7)
+				int_mod = 1.25
+			if(8)
+				int_mod = 1.50
+			if(9)
+				int_mod = 1.75
+		damage_multiplier = (backstab_multiplier * int_mod) // 
 		playsound(user.loc, 'sound/effects/dismember.ogg', 50, 1, -1) // Play a backstab sound
 		to_chat(user, "<span class='notice'>You backstab [M]!</span>")
 	. = ..()

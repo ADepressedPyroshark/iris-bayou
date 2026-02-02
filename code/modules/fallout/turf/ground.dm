@@ -92,7 +92,6 @@ GLOBAL_LIST_INIT(medicinal_plant_list, list(
 	/obj/structure/flora/wasteplant/wild_mutfruit = 5,
 	/obj/structure/flora/wasteplant/wild_fungus = 2,
 	/obj/structure/flora/wasteplant/wild_agave = 5,
-	/obj/structure/flora/wasteplant/fever_blossom = 8,
 	/obj/structure/flora/wasteplant/tomato = 2,
 	/obj/structure/flora/wasteplant/watermelon =2,
 	/obj/structure/flora/wasteplant/grape = 2,

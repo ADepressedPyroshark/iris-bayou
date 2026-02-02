@@ -116,24 +116,6 @@
 				through = "along"
 			else
 			 brush_what = "tummy"
-		if(BODY_ZONE_CHEST)
-			through = "down"
-			var/obj/item/organ/genital/b00bz = human_target.getorganslot(ORGAN_SLOT_BREASTS)
-			if(b00bz && b00bz.is_exposed() && wielded)
-				switch(user.a_intent)
-					if(INTENT_HELP)
-						brush_what = "breasts, softly"
-					if(INTENT_DISARM)
-						brush_what = "breasts, sensually"
-					if(INTENT_GRAB)
-						brush_what = "breasts, firmly"
-					if(INTENT_HARM)
-						brush_what = "breasts, vigorously"
-			else
-				if(wielded)
-					brush_what = "back"
-				else
-					brush_what = "chest"
 		if(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)
 			through = "along"
 			switch(user.a_intent)

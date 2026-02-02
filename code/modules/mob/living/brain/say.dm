@@ -22,6 +22,6 @@
 /mob/living/brain/lingcheck()
 	return LINGHIVE_NONE
 
-/mob/living/brain/treat_message(datum/rental_mommy/chat/momchat)
-	momchat.message = capitalize(momchat.message)
-	return momchat.message
+/mob/living/brain/treat_message(message)
+	message = capitalize(message)
+	return message

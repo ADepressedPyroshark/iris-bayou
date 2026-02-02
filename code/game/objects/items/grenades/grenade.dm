@@ -40,7 +40,6 @@
 
 /obj/item/grenade/ComponentInitialize()
 	. = ..()
-	RegisterSignal(src, COMSIG_VORE_ATOM_DIGESTED,PROC_REF(vore_prime))
 
 /obj/item/grenade/deconstruct(disassembled = TRUE)
 	if(!disassembled)
@@ -94,19 +93,6 @@
 	GLOB.bombers += message
 	message_admins(message)
 	log_game("[key_name(user)] primed \a [src] at [AREACOORD(T)].")
-
-// heh
-/obj/item/grenade/proc/vore_prime(datum/source, obj/vore_belly/belly, mob/living/vorer)
-	SIGNAL_HANDLER
-	if(active)
-		return
-	to_chat(vorer, span_userdanger("Uh oh."))
-	vorer?.visible_message(
-		span_alert("[vorer]'s [belly] starts ticking?"),
-		pref_check = VOREPREF_VORE_MESSAGES
-	)
-	INVOKE_ASYNC(src,PROC_REF(preprime), vorer, null, FALSE, 100)
-	return TRUE
 
 // for electric beep on activation
 /obj/item/grenade/proc/preprime(mob/user, delayoverride, msg = TRUE, volume = 60)

@@ -8161,9 +8161,6 @@
 /obj/structure/bed/mattress{
 	icon_state = "mattress2"
 	},
-/obj/effect/decal/cleanable/cum{
-	pixel_y = 5
-	},
 /obj/effect/decal/cleanable/blood/drip,
 /obj/item/restraints/handcuffs,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -8965,12 +8962,6 @@
 /obj/structure/flora/tree/oak_two,
 /turf/open/indestructible/ground/outside/dirt,
 /area/f13/caves)
-"dSf" = (
-/obj/structure/sign/poster/prefall/poster61{
-	pixel_y = 30
-	},
-/turf/open/floor/carpet/royalblack,
-/area/f13/bar/ashdown)
 "dSL" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
@@ -10357,17 +10348,6 @@
 	},
 /turf/closed/wall/mineral/brick,
 /area/f13/building)
-"eAz" = (
-/obj/structure/sign/poster/contraband/pinup_topless{
-	pixel_x = 32
-	},
-/obj/machinery/light{
-	dir = 4
-	},
-/turf/open/floor/f13/wood{
-	icon_state = "housewood2"
-	},
-/area/f13/bar/ashdown)
 "eAA" = (
 /obj/structure/chair/sofa{
 	dir = 1
@@ -17736,14 +17716,6 @@
 /obj/structure/flora/ausbushes/stalkybush,
 /turf/open/indestructible/ground/outside/dirt,
 /area/f13/caves)
-"hQe" = (
-/obj/structure/sign/poster/prefall/poster61{
-	pixel_x = 32
-	},
-/turf/open/floor/f13/wood{
-	icon_state = "housewood2"
-	},
-/area/f13/bar/ashdown)
 "hQj" = (
 /turf/open/indestructible/ground/outside/sidewalk{
 	icon_state = "horizontaloutermain0"
@@ -18274,12 +18246,6 @@
 /area/f13/wasteland/city)
 "ibV" = (
 /obj/structure/closet/cabinet,
-/obj/item/clothing/under/stripeddress,
-/obj/item/clothing/head/maid,
-/obj/item/clothing/head/maid,
-/obj/item/clothing/under/misc/stripper/mankini,
-/obj/item/clothing/under/misc/stripper/mankini,
-/obj/item/clothing/under/misc/stripper,
 /turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
 	color = "#d7d7d7"
 	},
@@ -27598,15 +27564,11 @@
 /obj/item/clothing/under/redeveninggown,
 /obj/item/clothing/head/nun_hood,
 /obj/item/clothing/suit/chaplain/nun,
-/obj/item/clothing/under/maid,
 /obj/machinery/light{
 	dir = 4
 	},
 /obj/item/clothing/under/misc/gear_harness,
 /obj/item/clothing/under/misc/gear_harness,
-/obj/item/clothing/under/misc/stripper/green,
-/obj/item/clothing/under/misc/stripper/green,
-/obj/item/clothing/under/misc/stripper,
 /turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
 	color = "#d7d7d7"
 	},
@@ -29243,13 +29205,10 @@
 /area/f13/wasteland)
 "mPp" = (
 /obj/structure/closet,
-/obj/item/key/bcollar,
 /obj/item/key/collar,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/electropack/shockcollar,
 /obj/item/electropack/shockcollar,
-/obj/item/electropack/shockcollar/explosive,
-/obj/item/electropack/shockcollar/explosive,
 /obj/item/assembly/signaler/advanced,
 /obj/item/assembly/signaler/advanced,
 /turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust,
@@ -35102,9 +35061,6 @@
 /turf/open/floor/carpet/purple,
 /area/f13/building/abandoned)
 "prl" = (
-/obj/effect/step_trigger/player_choice_log{
-	question = "Welcome to Ashdown's Bar, this location is considered a public 'free erp' area where players can safetly choose to be lewd in public without worry of breaking peoples prefs.  This means that you may see things you are not personally interested within, though the rules for player consent and no underaged play still stand.  Do you wish to continue onwards?"
-	},
 /obj/structure/curtain{
 	color = "#5c131b"
 	},
@@ -45018,9 +44974,6 @@
 /turf/open/indestructible/ground/outside/desert,
 /area/f13/wasteland)
 "tLP" = (
-/obj/structure/sign/poster/contraband/pinup_topless{
-	pixel_x = 32
-	},
 /obj/item/twohanded/required/kirbyplants/random,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light{
@@ -48680,13 +48633,6 @@
 	icon_state = "floorrusty"
 	},
 /area/f13/building)
-"vqc" = (
-/obj/structure/table/wood/settler,
-/obj/structure/fence/pole_b,
-/turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
-	color = "#d7d7d7"
-	},
-/area/f13/bar/ashdown)
 "vqd" = (
 /obj/structure/table_frame,
 /obj/item/shard,
@@ -50463,14 +50409,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/indestructible/ground/outside/dirt,
 /area/f13/wasteland)
-"wjs" = (
-/obj/structure/table/wood/settler,
-/obj/item/restraints/handcuffs/fake/kinky,
-/obj/item/restraints/handcuffs/fake/kinky,
-/turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
-	color = "#d7d7d7"
-	},
-/area/f13/bar/ashdown)
 "wjt" = (
 /obj/structure/flora/tree/tall{
 	icon_state = "tree_3"
@@ -53924,16 +53862,6 @@
 /obj/structure/obstacle/old_locked_door,
 /turf/open/floor/f13/wood,
 /area/f13/building)
-"xPe" = (
-/obj/structure/table/wood/settler,
-/obj/structure/railing{
-	dir = 1
-	},
-/obj/structure/fence/pole_t,
-/turf/open/floor/plasteel/f13/vault_floor/misc/vaultrust{
-	color = "#d7d7d7"
-	},
-/area/f13/bar/ashdown)
 "xPf" = (
 /obj/structure/decoration/rag{
 	icon_state = "skin"
@@ -54167,7 +54095,6 @@
 	pixel_y = 5
 	},
 /mob/living/simple_animal/hostile/renegade,
-/obj/effect/decal/cleanable/semen,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plasteel/f13{
 	icon_state = "whitebluerustychess"
@@ -116333,7 +116260,7 @@ btP
 btP
 btP
 btP
-inU
+wML
 btP
 btP
 btP
@@ -116574,9 +116501,9 @@ rYb
 rYb
 rYb
 cYp
-eAz
+dvK
 eJW
-hQe
+eJW
 eJW
 eJW
 dvK
@@ -116839,7 +116766,7 @@ hip
 oWE
 btP
 btP
-dSf
+wyW
 wyW
 wyW
 ghD
@@ -116849,7 +116776,7 @@ btP
 mYK
 lzn
 fOH
-wjs
+jvS
 btP
 gMW
 kOR
@@ -118130,8 +118057,8 @@ sbg
 sbg
 cCh
 dyP
-xPe
-vqc
+bJD
+jvS
 jvS
 fOH
 fOH

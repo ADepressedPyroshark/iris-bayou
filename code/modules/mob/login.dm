@@ -20,7 +20,6 @@
 	if(loc)
 		loc.on_log(TRUE)
 
-	SSpornhud.request_every_genital(src)
 
 	//readd this mob's HUDs (antag, med, etc)
 	reload_huds()
@@ -52,6 +51,12 @@
 				CB.Invoke()
 
 	mind?.hide_ckey = client?.prefs?.hide_ckey
+	// BYOND 516: Initialize verbs for the client on login/reconnect
+	// Reconnect shorter: joining longer
+	if(client)
+		var/delay = client.statbrowser_ready ? 1 : 50
+		addtimer(CALLBACK(client, TYPE_PROC_REF(/client, init_verbs)), delay)
+
 
 	log_message("Client [key_name(src)] has taken ownership of mob [src]([src.type])", LOG_OWNERSHIP)
 	SEND_SIGNAL(src, COMSIG_MOB_CLIENT_LOGIN, client)
@@ -63,3 +68,6 @@
 	if(SSrts.CanHasCommander(src))
 		SSrts.GiveCommanderVerb(src)
 		SSrts.UpdateButtons(src)
+
+	if(stat != DEAD)
+		SSlootmanager.send_all_to_player(client)

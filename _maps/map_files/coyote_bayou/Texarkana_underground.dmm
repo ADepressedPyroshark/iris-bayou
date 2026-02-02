@@ -2025,9 +2025,13 @@
 /turf/open/floor/plasteel/f13/vault_floor/floor,
 /area/f13/building)
 "bAz" = (
-/obj/structure/flora/wasteplant/fever_blossom,
-/turf/open/indestructible/ground/outside/dirt/bigdirtturf,
-/area/f13/caves)
+/obj/machinery/door/poddoor/shutters{
+	id = "supermutantbehemothexit";
+	max_integrity = 200000
+	},
+/obj/machinery/computer/rdconsole/core,
+/turf/open/indestructible/ground/inside/subway,
+/area/f13/tunnel)
 "bAN" = (
 /obj/structure/chair/sofa/right{
 	dir = 4
@@ -4102,7 +4106,6 @@
 /obj/item/electropack/shockcollar{
 	frequency = 1453
 	},
-/obj/item/key/scollar,
 /turf/open/indestructible/ground/inside/subway,
 /area/f13/tunnel)
 "bPP" = (
@@ -5799,8 +5802,7 @@
 /obj/machinery/button/door{
 	id = "supermutantbehemothexit";
 	name = "Exit Chute Control";
-	pixel_x = -28;
-	req_one_access_txt = "134"
+	pixel_x = -28
 	},
 /turf/open/indestructible/ground/inside/subway,
 /area/f13/tunnel)
@@ -7155,9 +7157,9 @@
 	},
 /area/f13/caves)
 "dIC" = (
-/obj/machinery/rnd/production/circuit_imprinter/department/science,
+/obj/machinery/rnd/destructive_analyzer,
 /turf/open/floor/plasteel/f13/vault_floor/purple/side{
-	dir = 1
+	dir = 8
 	},
 /area/f13/building)
 "dIJ" = (
@@ -9672,9 +9674,9 @@
 /turf/open/indestructible/ground/inside/subway,
 /area/f13/tunnel)
 "fLp" = (
-/obj/structure/flora/wasteplant/fever_blossom,
-/turf/open/floor/plating/ashplanet/rocky,
-/area/f13/caves)
+/obj/machinery/computer/rdconsole/core,
+/turf/closed/indestructible/f13vaultrusted,
+/area/f13/tunnel)
 "fLv" = (
 /obj/effect/decal/cleanable/oil{
 	icon_state = "floor5"
@@ -10740,8 +10742,7 @@
 /obj/machinery/button/door{
 	id = "supermutantbehemothexit";
 	name = "Exit Chute Control";
-	pixel_x = 31;
-	req_one_access_txt = "134"
+	pixel_x = 31
 	},
 /obj/effect/decal/remains/human,
 /turf/open/indestructible/ground/inside/subway,
@@ -11046,11 +11047,6 @@
 /obj/item/paperplane,
 /turf/open/floor/plasteel/f13/vault_floor/dark,
 /area/f13/building/hospital)
-"gMk" = (
-/obj/structure/flora/wasteplant/fever_blossom,
-/obj/effect/decal/cleanable/glitter/blue,
-/turf/open/water,
-/area/f13/caves)
 "gMl" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/spacevine,
@@ -12665,10 +12661,6 @@
 "ifZ" = (
 /obj/structure/simple_door/bunker,
 /turf/open/floor/plasteel/f13/vault_floor/yellow,
-/area/f13/caves)
-"ihc" = (
-/obj/structure/flora/wasteplant/fever_blossom,
-/turf/open/indestructible/ground/outside/dirt,
 /area/f13/caves)
 "ihn" = (
 /obj/structure/nest/raider/melee,
@@ -18370,7 +18362,6 @@
 /area/f13/building)
 "mvH" = (
 /obj/item/melee/chainofcommand/tailwhip/kitty,
-/obj/item/restraints/handcuffs/fake/kinky,
 /turf/open/floor/wood_common{
 	color = "#775555"
 	},
@@ -20959,11 +20950,6 @@
 	icon_state = "greendirtyfull"
 	},
 /area/f13/caves)
-"ozr" = (
-/obj/structure/flora/wasteplant/fever_blossom,
-/obj/effect/decal/cleanable/glitter/blue,
-/turf/open/floor/plating/ashplanet/rocky,
-/area/f13/caves)
 "ozx" = (
 /obj/structure/spacevine,
 /turf/open/water,
@@ -22002,7 +21988,7 @@
 /turf/open/indestructible/ground/inside/subway,
 /area/f13/caves)
 "pnU" = (
-/obj/machinery/computer/rdconsole/core/followers,
+/obj/machinery/computer/rdconsole/core,
 /turf/open/floor/plasteel/f13/vault_floor/purple/corner{
 	dir = 8
 	},
@@ -23168,8 +23154,6 @@
 /obj/structure/closet{
 	storage_capacity = 10
 	},
-/obj/item/key/scollar,
-/obj/item/key/scollar,
 /obj/item/key/collar,
 /obj/item/clothing/neck/petcollar,
 /obj/item/clothing/neck/petcollar,
@@ -23647,11 +23631,6 @@
 	dir = 8
 	},
 /area/f13/building)
-"qut" = (
-/obj/structure/flora/wasteplant/fever_blossom,
-/obj/effect/decal/cleanable/glitter/blue,
-/turf/open/indestructible/ground/outside/dirt/bigdirtturf,
-/area/f13/caves)
 "qvr" = (
 /obj/structure/nest/raider,
 /turf/open/floor/f13{
@@ -24525,7 +24504,7 @@
 "rde" = (
 /mob/living/simple_animal/hostile/abomhorror/nsb{
 	color = "#008833";
-	name = "The Cum Beast";
+	name = "The Beast";
 	desc = "Despite its name, this hideous beast is not actually the mutated runoff of all the drain water from Nash.  Its just a normal abomination, but green."
 	},
 /turf/open/indestructible/ground/inside/mountain,
@@ -31509,7 +31488,7 @@
 /turf/open/water,
 /area/f13/building/sewers)
 "wnz" = (
-/obj/machinery/rnd/destructive_analyzer,
+/obj/machinery/autolathe,
 /turf/open/floor/plasteel/f13/vault_floor/purple/corner,
 /area/f13/building)
 "wnP" = (
@@ -32147,11 +32126,6 @@
 /mob/living/simple_animal/hostile/raider/ranged,
 /turf/open/floor/wood_wide/wood_wide_dark,
 /area/f13/building/sewers)
-"wPD" = (
-/obj/structure/flora/wasteplant/fever_blossom,
-/obj/effect/decal/cleanable/glitter/blue,
-/turf/open/indestructible/ground/outside/dirt,
-/area/f13/caves)
 "wPI" = (
 /obj/structure/wreck/trash/machinepile,
 /turf/open/floor/plasteel/f13/vault_floor/red,
@@ -33343,7 +33317,7 @@
 /turf/open/indestructible/ground/outside/dirt,
 /area/f13/caves)
 "xGF" = (
-/obj/machinery/autolathe,
+/obj/machinery/rnd/production/circuit_imprinter,
 /turf/open/floor/plasteel/f13/vault_floor/purple/side{
 	dir = 8
 	},
@@ -40953,7 +40927,7 @@ dKY
 pLF
 qkG
 pLF
-dIC
+jgR
 omO
 aae
 aae
@@ -41209,7 +41183,7 @@ omO
 tXK
 nLd
 xGF
-nLd
+dIC
 ixN
 omO
 aae
@@ -43596,7 +43570,7 @@ bAg
 bxU
 rsY
 rsY
-wPD
+uIx
 nrb
 bxU
 xZr
@@ -44105,7 +44079,7 @@ nrb
 nrb
 nrb
 nrb
-ihc
+bxU
 rsY
 rsY
 rsY
@@ -44331,7 +44305,7 @@ aah
 pwE
 bQS
 aah
-jja
+bAz
 aah
 pHQ
 pHQ
@@ -44588,7 +44562,7 @@ aah
 pwE
 pwE
 pwE
-pwE
+fLp
 jja
 jja
 jja
@@ -45391,7 +45365,7 @@ uIx
 bAg
 aaa
 aaa
-ihc
+bxU
 bxU
 lpi
 oVY
@@ -45644,7 +45618,7 @@ klp
 bSr
 gtT
 uIx
-qut
+rsY
 aaa
 aaa
 aaa
@@ -45907,7 +45881,7 @@ aaa
 aaa
 aaa
 hjs
-ozr
+oVY
 oVY
 hjs
 aaa
@@ -46672,7 +46646,7 @@ fEc
 jke
 srM
 wIr
-bAz
+bAg
 aaa
 aaa
 aaa
@@ -46698,7 +46672,7 @@ aaa
 qEI
 pNO
 uIx
-wPD
+uIx
 gby
 mhF
 sJA
@@ -46923,7 +46897,7 @@ pwE
 aaa
 aaa
 bAg
-bAz
+bAg
 bAg
 byf
 uUI
@@ -47456,7 +47430,7 @@ jke
 srM
 wvz
 wvz
-ihc
+bxU
 bxU
 hjs
 hjs
@@ -47698,7 +47672,7 @@ aae
 aaa
 aae
 aaa
-bAz
+bAg
 kKE
 fhC
 gGV
@@ -48239,7 +48213,7 @@ vmu
 uHX
 stc
 stc
-ihc
+bxU
 uIx
 eKB
 bxU
@@ -48499,7 +48473,7 @@ stc
 sJA
 iEk
 uhE
-ihc
+bxU
 gby
 rnh
 aah
@@ -48746,11 +48720,11 @@ yix
 gGV
 xWX
 adV
-gMk
+srM
 isF
 dgF
 hjs
-ihc
+bxU
 bxU
 aaa
 bxU
@@ -48991,7 +48965,7 @@ srM
 gGV
 hjs
 pDZ
-ihc
+bxU
 bxU
 aaa
 aaa
@@ -49011,7 +48985,7 @@ hjs
 hjs
 iFQ
 bxU
-ihc
+bxU
 uIx
 uIx
 bpD
@@ -49242,7 +49216,7 @@ aae
 aae
 aae
 aaa
-bAz
+bAg
 hjs
 ryf
 gGV
@@ -49508,7 +49482,7 @@ gGV
 srM
 srM
 sUM
-fLp
+hjs
 bxU
 aaa
 tQE
@@ -49528,7 +49502,7 @@ hRS
 mhF
 mtW
 bxU
-ihc
+bxU
 rnh
 aah
 aah
@@ -50296,7 +50270,7 @@ iFQ
 iFQ
 iFQ
 iFQ
-ihc
+bxU
 lPc
 uIx
 bpD
@@ -50550,7 +50524,7 @@ gGV
 xQG
 oVY
 ukq
-wPD
+uIx
 iFQ
 iFQ
 rnh
@@ -51054,7 +51028,7 @@ aaa
 tQE
 bxU
 uIx
-wPD
+uIx
 fdT
 fKy
 tTL
@@ -51063,7 +51037,7 @@ gGV
 kKE
 kEt
 oVY
-wPD
+uIx
 lYE
 stc
 aae
@@ -51314,7 +51288,7 @@ kkZ
 lpi
 lpi
 uIx
-ihc
+bxU
 hjs
 kKE
 kYY

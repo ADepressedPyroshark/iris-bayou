@@ -51,48 +51,6 @@
 	action_verb_ing = "tending"
 	can_taste = FALSE
 
-/obj/item/hand_item/tactile/tender/Initialize(mapload, new_amount, merge)
-	. = ..()
-	START_PROCESSING(SSfastprocess, src)
-
-/obj/item/hand_item/tactile/tender/Destroy()
-	STOP_PROCESSING(SSfastprocess, src)
-	. = ..()
-
-/obj/item/hand_item/tactile/tender/process()
-	var/mob/living/holder = loc
-	if(!istype(holder))
-		return
-	var/nut = "[round((max(holder.nutrition - NUTRITION_LEVEL_STARVING, 0)), 5)]"
-	var/res = "[round(holder.heal_reservoir)]"
-	switch(holder.nutrition)
-		if(-INFINITY to NUTRITION_LEVEL_STARVING)
-			nut = span_alert(nut)
-		if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_FED)
-		if(NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
-			nut = span_notice(nut)
-		if(NUTRITION_LEVEL_WELL_FED to (NUTRITION_LEVEL_FAT * 2))
-			nut = span_green(nut)
-		if((NUTRITION_LEVEL_FAT * 2) to INFINITY)
-			nut = span_green(nut)
-			nut = "<b>[nut]</b>"
-	nut = "🍖[nut]"
-	switch(holder.heal_reservoir)
-		if(-INFINITY to 2)
-			res = span_alert(res)
-		if(2 to 5)
-		if(5 to 15)
-			res = span_green(res)
-		if(15 to INFINITY)
-			res = span_green(res)
-			res = "<b>[res]</b>"
-	res = "💧[res]"
-	maptext = "[nut]\n[res]"
-	maptext_width = 64
-
-/obj/item/hand_item/tactile/toucher/horny //being repurposed as a way to 'feel' the world around the player.  Specifically other players though, lets be real.
-	grope = /datum/grope_kiss_MERP
-
 /obj/item/hand_item/tactile/toucher //being repurposed as a way to 'feel' the world around the player.  Specifically other players though, lets be real.
 	name = "touch"
 	desc = "A finger, for touching things."
@@ -129,11 +87,6 @@
 	action_verb_ing = "kissing"
 	can_taste = FALSE
 
-/obj/item/hand_item/tactile/kisser/horny
-	grope = /datum/grope_kiss_MERP/kiss
-
-/obj/item/hand_item/tactile/licker/horny
-	grope = /datum/grope_kiss_MERP/lick
 
 /obj/item/hand_item/tactile/licker
 	name = "tongue"
@@ -172,8 +125,6 @@
 /obj/item/hand_item/tactile/proc/tend_hurt(mob/living/user, mob/living/target)
 	if(!isliving(user) || !isliving(target))
 		return
-	if(grope)
-		return FALSE
 	// if(!HAS_TRAIT(user, needed_trait))
 	// 	return FALSE
 	var/mob/living/mlemmed = target
@@ -195,8 +146,6 @@
 
 /obj/item/hand_item/tactile/proc/lick_atom(atom/movable/licked, mob/living/user)
 	if(SEND_SIGNAL(licked, COMSIG_ATOM_LICKED, user, src))
-		return
-	if(do_a_grope(user, licked))
 		return
 	var/list/lick_words = get_lick_words(user)
 	if(isliving(licked))
@@ -240,21 +189,6 @@
 		if(!istype(our_tongue))
 			return FALSE
 	. = ..()
-
-/obj/item/hand_item/tactile/proc/do_a_grope(mob/living/doer, mob/living/target)
-	if(!LAZYLEN(GLOB.gropekissers))
-		for(var/booby in typesof(/datum/grope_kiss_MERP))
-			var/datum/grope_kiss_MERP/gkm = new booby()
-			GLOB.gropekissers[gkm.type] = gkm
-	if(!grope)
-		return
-	var/datum/grope_kiss_MERP/gunkem = LAZYACCESS(GLOB.gropekissers, grope)
-	if(!gunkem) // the G is soft
-		return
-	var/list/gropeturn = gunkem.make_visible_message(doer, target, lastgrope)
-	if(gropeturn)
-		lastgrope = gropeturn
-		return TRUE
 
 /obj/item/hand_item/tactile/proc/get_lick_words(mob/living/user)
 	if(!user)
@@ -332,6 +266,7 @@ touch + help + facing their rear = pat back
 	attack_speed = CLICK_CD_MELEE * 0.7
 	item_flags = PERSONAL_ITEM | ABSTRACT | HAND_ITEM
 	weapon_special_component = /datum/component/weapon_special/single_turf
+	block_parry_data = /datum/block_parry_data/bokken
 	var/can_adjust_unarmed = TRUE
 	var/unarmed_adjusted = TRUE
 
@@ -440,6 +375,7 @@ touch + help + facing their rear = pat back
 	attack_speed = CLICK_CD_MELEE * 0.7
 	item_flags = PERSONAL_ITEM | ABSTRACT | HAND_ITEM
 	weapon_special_component = /datum/component/weapon_special/single_turf
+	block_parry_data = /datum/block_parry_data/bokken
 
 /obj/item/hand_item/clawer/equipped(mob/user, slot)
 	. = ..()
@@ -602,6 +538,7 @@ touch + help + facing their rear = pat back
 	backstab_multiplier = 1.8
 	attack_speed = CLICK_CD_MELEE * 0.7
 	weapon_special_component = /datum/component/weapon_special/single_turf
+	block_parry_data = /datum/block_parry_data/bokken
 	var/list/mytail
 
 /obj/item/hand_item/tail/ComponentInitialize()
@@ -768,206 +705,3 @@ touch + help + facing their rear = pat back
 	qdel(src)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/obj/item/hand_item/subtle_catapult
-	name = "discrete action delivery system"
-	desc = "Do lewd things in public, without anyone (but whoever you're doing it to) knowing!"
-	icon = 'icons/obj/in_hands.dmi'
-	icon_state = "blushfox"
-	item_flags = ABSTRACT | HAND_ITEM | NO_TURN
-	max_reach = 70
-	var/message
-	var/aoe_range = 1
-
-/obj/item/hand_item/subtle_catapult/examine(mob/user)
-	. = ..()
-	// . += span_green("AOE range: Your tile, plus [aoe_range] tiles in every direction.")
-	. += span_green("Current message:")
-	. += span_notice(message ? message : "None.")
-	. += span_green("--")
-	. += span_green("HOW 2 USE:")
-	. += span_notice("1. Click it in hand to start writing a message.")
-	. += span_notice("2. Click this on someone to send that message to them.")
-	. += span_notice("3. Or CtrlShift click it to pick anyone in view")
-	. += span_notice("You can also alt-click it to view your previous messages, and even select them to send!")
-	. += span_notice("It will ask you to confirm before sending, so don't worry about accidentally sending something you didn't mean to!")
-	. += span_notice("Also dont worry about dropping it or anything, it should still take whatever you wrote with it!")
-	. += span_green("--")
-
-/obj/item/hand_item/subtle_catapult/pre_attack(atom/A, mob/living/user, params, attackchain_flags, damage_multiplier)
-	. = TRUE
-	if(!extract_client(A))
-		return
-	if(message)
-		StartSendMessage(user, A)
-	else
-		EditMessage(user, A)
-
-/obj/item/hand_item/subtle_catapult/attack_self(mob/user)
-	. = ..()
-	EditMessage(user)
-
-/obj/item/hand_item/subtle_catapult/AltClick(mob/user)
-	. = ..()
-	var/list/messages = SSchat.GetHornyHistory(user)
-	if(!LAZYLEN(messages))
-		to_chat(user, span_alert("You haven't made any messages yet!"))
-		return
-	var/selected = input(
-		user, 
-		"Here's a list of the messages you've made with this! Pick one to load it into this tool!", 
-		"Select a message to send!", 
-		message,
-	) as null|anything in messages
-	if(selected)
-		message = selected
-		to_chat(user, span_green("Message loaded!"))
-	else
-		to_chat(user, span_alert("Message selection cancelled!"))
-
-/obj/item/hand_item/subtle_catapult/CtrlShiftClick(mob/user)
-	. = ..()
-	var/list/ppl = hearers(10, user)
-	for(var/mob/M in ppl)
-		if(!extract_client(M))
-			ppl -= M
-		if(!isliving(M))
-			ppl -= M
-		if(M == user)
-			ppl -= M
-	var/mob/whomst = input(
-		user,
-		"Who would you like to send a message to?",
-		"Select a target!",
-		null
-	) as null|anything in ppl
-	if(whomst)
-		if(message)
-			StartSendMessage(user, whomst)
-		else
-			EditMessage(user, whomst)
-	else
-		to_chat(user, span_alert("Message selection cancelled!"))
-
-/obj/item/hand_item/subtle_catapult/dropped(mob/user)
-	. = ..()
-	SSchat.StashHornyThing(user)
-
-/obj/item/hand_item/subtle_catapult/proc/EditMessage(mob/user, mob/living/M, and_send)
-	var/head = M ? "Prepare a message for [M]!" : "Prepare a message!"
-	var/msg = stripped_multiline_input_or_reflect(user, EMOTE_HEADER_TEXT, head, message, 99999)
-	if(msg)
-		to_chat(user, span_green("Message prepared:"))
-		to_chat(user, span_notice(msg))
-		to_chat(user, span_green("Click [M] to send it!"))
-		message = msg
-		SSchat.StoreHornyMessage(user, msg)
-		if(M)
-			StartSendMessage(user, M)
-	else
-		to_chat(user, span_alert("Message cancelled! Nothing's changed!!"))
-
-/obj/item/hand_item/subtle_catapult/proc/StartSendMessage(mob/user, mob/living/M)
-	if(!message)
-		return
-	if(!M || !user)
-		return
-	// if(M == user || !M.client)
-	// 	return
-	var/shomsg = message
-	if(LAZYLEN(shomsg) > 700)
-		shomsg = copytext(shomsg, 0, 700) + "..."
-	// first we ask em, you sure you wanna do this?
-	var/confirm = alert(user, "You are about to send this message to [M]:\n\n[message]\n\nAre you sure you want to do this?", "Send message?", "Yes", "No")
-	if(confirm != "Yes")
-		to_chat(user, span_alert("Okay nevermind!!"))
-		return
-	DeliverMessage(user, M)
-
-/obj/item/hand_item/subtle_catapult/proc/DeliverMessage(mob/user, mob/living/M)
-	var/original_message = message
-	var/to_send = message
-
-	user.log_message(to_send, LOG_SUBTLE)
-	var/msg_check = user.say_narrate_replace(to_send, user)
-	if(msg_check)
-		to_send = span_subtle("<i>[msg_check]</i>")
-	else
-		to_send = span_subtle("<b>[user]</b> " + "<i>[user.say_emphasis(to_send)]</i>")
-
-	var/datum/emote/E
-	E = E.emote_list["subtle"]
-
-	var/datum/rental_mommy/chat/mommy = E.BuildMommy(user, to_send)
-	mommy.original_message = original_message
-	mommy.exclusive_targets = list(M, user)
-
-	// Visible to_send, as in only visible to you and them
-	user.visible_message(
-		message = to_send,
-		data = list("mom" = mommy))
-
-	//broadcast to ghosts, if they have a client, are dead, arent in the lobby, allow ghostsight, and, if subtler, are admemes
-	user.emote_for_ghost_sight(mommy.message, TRUE, 0)
-	mommy.checkin()
-	user.playsound_local(get_turf(user), 'sound/f13effects/sunsetsounds/blush.ogg', 80, FALSE)
-	M.playsound_local(get_turf(M), 'sound/f13effects/sunsetsounds/blush.ogg', 80, FALSE)
-
-////////
-//Bite//
-////////
-/obj/item/hand_item/butt
-	name = "your butt"
-	desc = "Very smoochable."
-	icon = 'icons/obj/in_hands.dmi'
-	icon_state = "biter"
-	attack_verb = list("smecked", "bwapped", "bumped", "clapped", "quapped", "vooped", "whomped")
-	// hitsound = "sound/weapons/bite.ogg"
-	w_class = WEIGHT_CLASS_GIGANTIC // your butt is HUGE!!!!
-	flags_1 = CONDUCT_1
-	force = 0
-	weapon_special_component = /datum/component/weapon_special/single_turf
-
-/obj/item/hand_item/butt/afterattack(mob/living/M, mob/living/user)
-	. = ..()
-	user.spin(4, 1) // SPEEN
-
-/obj/item/hand_item/butt/equipped(mob/user, slot)
-	. = ..()
-	buttify(user)
-
-/obj/item/hand_item/butt/pickup(mob/living/user)
-	. = ..()
-	buttify(user)
-
-/obj/item/hand_item/butt/proc/buttify(mob/user)
-	if(!iscarbon(user))
-		to_chat(user, span_alert("You aint got a butt!"))
-		return
-	var/mob/living/carbon/human/H = user
-	if(!H.has_butt())
-		to_chat(user, span_alert("[H], you have no butt!"))
-		H.emote("scream")
-		qdel(src)
-		return
-	var/obj/item/organ/genital/butt/B = H.getorganslot(ORGAN_SLOT_BUTT)
-	var/datum/sprite_accessory/sprite_acc = B.get_sprite_accessory()
-	icon = 'icons/obj/genitals/butt_onmob.dmi'
-	icon_state = B.get_icon_state(user, sprite_acc, FALSE, "FRONT")
-	dir = NORTH
-	var/datum/preferences/P = extract_prefs(user)
-	color = "#[P.features["butt_color"]]"
-	force = 6 * B.size
-	attack_speed = (CLICK_CD_MELEE / 3) * B.size
-	switch(B.size)
-		if(1 to 2)
-			w_class = WEIGHT_CLASS_TINY
-		if(3)
-			w_class = WEIGHT_CLASS_SMALL
-		if(4)
-			w_class = WEIGHT_CLASS_NORMAL
-		if(5)
-			w_class = WEIGHT_CLASS_BULKY
-		if(6 to 7)
-			w_class = WEIGHT_CLASS_HUGE
-		if(8 to INFINITY)
-			w_class = WEIGHT_CLASS_GIGANTIC

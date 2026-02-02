@@ -466,29 +466,6 @@
 
 //Start Advanced Mobs//
 
-/mob/living/simple_animal/advanced/tenderclawmale
-	name = "male tenderclaw"
-	desc = "A..aethergiest? Or, well. It sort of looks like a aethergiest. Just, softer and friendler!"
-	icon = 'modular_coyote/icons/mob/newclaws.dmi'
-	icon_state = "newclaw"
-	icon_living = "newclaw"
-	icon_dead = "newclaw_d"
-
-/mob/living/simple_animal/advanced/tenderclawfemale
-	name = "female tenderclaw"
-	desc = "A..aethergiest? Or, well. It sort of looks like a aethergiest. Just, softer and friendler!"
-	icon = 'modular_coyote/icons/mob/newclaws.dmi'
-	icon_state = "femclaw"
-	icon_living = "femclaw"
-	icon_dead = "femclaw_d"
-
-/mob/living/simple_animal/advanced/tenderclawherm
-	name = "herm tenderclaw"
-	desc = "A..aethergiest? Or, well. It sort of looks like a aethergiest. Just, softer and friendler!"
-	icon = 'modular_coyote/icons/mob/newclaws.dmi'
-	icon_state = "hermclaw"
-	icon_living = "hermclaw"
-	icon_dead = "hermclaw_d"
 
 /mob/living/simple_animal/advanced/nightstalker
 	name = "nightstalker"

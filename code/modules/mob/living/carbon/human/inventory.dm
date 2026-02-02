@@ -155,14 +155,14 @@
 	//Item is handled and in slot, valid to call callback, for this proc should always be true
 	if(!not_handled)
 		I.equipped(src, slot)
-	update_genitals()
 	return not_handled //For future deeper overrides
 
 /mob/living/carbon/human/equipped_speed_mods()
 	. = ..()
+	var/str_mod = get_str_mod()
 	for(var/sloties in get_all_slots() - list(l_store, r_store, s_store))
 		var/obj/item/thing = sloties
-		. += thing?.slowdown
+		. += (thing?.slowdown * str_mod)
 
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE)
 	var/index = get_held_index_of_item(I)
@@ -245,8 +245,6 @@
 		s_store = null
 		if(!QDELETED(src))
 			update_inv_s_store()
-	update_genitals()
-
 /mob/living/carbon/human/wear_mask_update(obj/item/clothing/C, toggle_off = 1)
 	if((C.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || (initial(C.flags_inv) & (HIDEHAIR|HIDEFACIALHAIR)))
 		update_hair()

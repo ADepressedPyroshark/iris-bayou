@@ -92,13 +92,7 @@ SUBSYSTEM_DEF(pornhud)
 	for(var/mob/seer in GLOB.player_list)
 		gunt.show_images_to(seer, force)
 
-/datum/controller/subsystem/pornhud/proc/flush_genitals(mob/living/carbon/human/flusher)
-	if(!ishuman(flusher))
-		return
-	var/datum/genital_images/GI = get_genital_datum(flusher)
-	if(!GI)
-		return
-	GI.flush_genitals()
+
 
 /datum/controller/subsystem/pornhud/proc/flush_undies(mob/living/carbon/human/flusher)
 	if(!ishuman(flusher))
@@ -129,8 +123,6 @@ SUBSYSTEM_DEF(pornhud)
 		return MOB_LAYER
 	var/layer_out = dork.layer
 	switch(kind)
-		if(PHUD_BUTT,PHUD_BOOB,PHUD_TALLYWHACKER,PHUD_BALLS,PHUD_VAG,PHUD_BELLY)
-			layer_out += (GENITAL_LAYER_OFFSET * (position == "BEHIND" ? -1 : 1))
 		if(PHUD_SHIRT)
 			layer_out += (SHIRT_LAYER_OFFSET * (position == "BEHIND" ? -1 : 1))
 		if(PHUD_PANTS)
@@ -172,24 +164,6 @@ SUBSYSTEM_DEF(pornhud)
 	/// ckeys with people we've already shown our genitals to
 	var/list/shown_to = list()
 
-	var/list/butt = list()
-	var/butt_visible
-
-	var/list/breasts = list()
-	var/breasts_visible
-
-	var/list/peen = list()
-	var/peen_visible
-
-	var/list/balls = list()
-	var/balls_visible
-
-	var/list/vag = list()
-	var/vag_visible
-
-	var/list/belly = list()
-	var/belly_visible
-
 	var/list/tail = list() // nice and suggestive
 	var/tail_visible = TRUE
 
@@ -217,33 +191,7 @@ SUBSYSTEM_DEF(pornhud)
 	/// pruned? why? not like we'd be using that ram for anything else
 	var/list/old_image_cache = list()
 
-/datum/genital_images/New(mob/living/carbon/human/newowner)
-	. = ..()
-	owner = WEAKREF(newowner)
-	shirt_visible = !newowner.hidden_undershirt
-	underpants_visible = !newowner.hidden_underwear
-	socks_visible = !newowner.hidden_socks
 
-/// is this player whitelisted?
-/// if so, they can see genitals even if they're hidden
-/datum/genital_images/proc/is_whitelisted(mob/someone)
-	if(!someone || !someone.client)
-		return FALSE
-	var/datum/preferences/P = extract_prefs(someone)
-	var/list/whitelist = splittext(P.genital_whitelist, ",")
-	var/index = 1
-	for(var/entry in whitelist)
-		entry = ckey(entry)
-		if(findtext(ckey(someone.real_name), entry))
-			return TRUE
-		if(findtext(entry, ckey(someone.real_name)))
-			return TRUE
-		if(findtext(ckey(someone.name), entry))
-			return TRUE
-		if(findtext(entry, ckey(someone.name)))
-			return TRUE
-		if(index++ > SSpornhud.max_whitelist_search)
-			return FALSE
 	
 // add a part to the list
 /datum/genital_images/proc/add_part(part, list/images)
@@ -254,18 +202,6 @@ SUBSYSTEM_DEF(pornhud)
 			images = list(images)
 	var/list/images2change
 	switch(part)
-		if(PHUD_BUTT)
-			images2change = butt
-		if(PHUD_BOOB)
-			images2change = breasts
-		if(PHUD_TALLYWHACKER)
-			images2change = peen
-		if(PHUD_BALLS)
-			images2change = balls
-		if(PHUD_VAG)
-			images2change = vag
-		if(PHUD_BELLY)
-			images2change = belly
 		if(PHUD_TAIL)
 			images2change = tail
 		if(PHUD_WINGS)
@@ -281,18 +217,6 @@ SUBSYSTEM_DEF(pornhud)
 	if(!LAZYLEN(images ^ images2change))
 		return // nothing changed
 	switch(part)
-		if(PHUD_BUTT)
-			butt = images
-		if(PHUD_BOOB)
-			breasts = images
-		if(PHUD_TALLYWHACKER)
-			peen = images
-		if(PHUD_BALLS)
-			balls = images
-		if(PHUD_VAG)
-			vag = images
-		if(PHUD_BELLY)
-			belly = images
 		if(PHUD_TAIL)
 			tail = images
 		if(PHUD_WINGS)
@@ -312,30 +236,6 @@ SUBSYSTEM_DEF(pornhud)
 	if(isnull(on_off))
 		toggle = TRUE
 	switch(part)
-		if(PHUD_BUTT)
-			if(butt_visible == on_off)
-				return
-			. = (butt_visible = (toggle ? !butt_visible : on_off))
-		if(PHUD_BOOB)
-			if(breasts_visible == on_off)
-				return
-			. = (breasts_visible = (toggle ? !breasts_visible : on_off))
-		if(PHUD_TALLYWHACKER)
-			if(peen_visible == on_off)
-				return
-			. = (peen_visible = (toggle ? !peen_visible : on_off))
-		if(PHUD_BALLS)
-			if(balls_visible == on_off)
-				return
-			. = (balls_visible = (toggle ? !balls_visible : on_off))
-		if(PHUD_VAG)
-			if(vag_visible == on_off)
-				return
-			. = (vag_visible = (toggle ? !vag_visible : on_off))
-		if(PHUD_BELLY)
-			if(belly_visible == on_off)
-				return
-			. = (belly_visible = (toggle ? !belly_visible : on_off))
 		if(PHUD_TAIL)
 			if(tail_visible == on_off)
 				return
@@ -400,28 +300,6 @@ SUBSYSTEM_DEF(pornhud)
 	var/mob/living/carbon/human/myowner = GET_WEAKREF(owner)
 	if(!ishuman(myowner))
 		return
-	var/list/image_order = myowner.dna.decode_cockstring(FALSE)
-	var/preflag = is_whitelisted(P.parent.mob) ? NONE : P.features["genital_hide"]
-	for(var/entry in image_order)
-		switch(entry)
-			if(CS_BUTT)
-				if(butt_visible && !CHECK_BITFIELD(preflag, HIDE_BUTT))
-					all_images += butt
-			if(CS_BOOB)
-				if(breasts_visible && !CHECK_BITFIELD(preflag, HIDE_BOOBS))
-					all_images += breasts
-			if(CS_PENIS)
-				if(peen_visible && !CHECK_BITFIELD(preflag, HIDE_PENIS))
-					all_images += peen
-			if(CS_BALLS)
-				if(balls_visible && !CHECK_BITFIELD(preflag, HIDE_BALLS))
-					all_images += balls
-			if(CS_VAG)
-				if(vag_visible && !CHECK_BITFIELD(preflag, HIDE_VAG))
-					all_images += vag
-			if(CS_BELLY)
-				if(belly_visible && !CHECK_BITFIELD(preflag, HIDE_BELLY))
-					all_images += belly
 	if(tail && tail_visible)
 		all_images += tail
 	if(wings && wings_visible)
@@ -445,18 +323,6 @@ SUBSYSTEM_DEF(pornhud)
 		flat.overlays += I
 	cache_images(imgsformatted)
 	return imgsformatted
-
-/datum/genital_images/proc/flush_genitals()
-	var/changed = LAZYLEN(butt) || LAZYLEN(breasts) || LAZYLEN(peen) || LAZYLEN(balls) || LAZYLEN(vag) || LAZYLEN(belly)
-	butt = list()
-	breasts = list()
-	peen = list()
-	balls = list()
-	vag = list()
-	belly = list()
-	if(changed)
-		set_changed()
-	return TRUE
 
 /datum/genital_images/proc/flush_undies() // thats how you get a clog, dummy
 	var/changed = LAZYLEN(undershirt) || LAZYLEN(underpants) || LAZYLEN(socks)

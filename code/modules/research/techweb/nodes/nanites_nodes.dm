@@ -46,7 +46,7 @@
 	display_name = "Biological Nanite Programming"
 	description = "Nanite programs that require complex biological interaction."
 	prereq_ids = list("nanite_base","biotech")
-	design_ids = list("bloodheal_nanites", "coagulating_nanites", "sensor_crit_nanites", "sensor_death_nanites", "sensor_health_nanites", "sensor_damage_nanites")
+	design_ids = list("regenerative_nanites" , "bloodheal_nanites", "coagulating_nanites", "sensor_crit_nanites", "sensor_death_nanites", "sensor_health_nanites", "sensor_damage_nanites")
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2500)
 
 /datum/techweb_node/nanite_neural
@@ -70,7 +70,7 @@
 	display_name = "Harmonic Nanite Programming"
 	description = "Nanite programs that require seamless integration between nanites and biology."
 	prereq_ids = list("nanite_bio","nanite_smart","nanite_mesh")
-	design_ids = list("researchplus_nanites","defib_nanites","brainheal_plus_nanites","purging_plus_nanites","adrenaline_nanites")
+	design_ids = list("regenerative_plus_nanites" , "researchplus_nanites","defib_nanites","brainheal_plus_nanites","purging_plus_nanites","adrenaline_nanites")
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 4000)
 /*
 /datum/techweb_node/nanite_combat

@@ -300,32 +300,6 @@ const KissPref = (props, context) => {
   );
 };
 
-// / The F-list link
-const FlistLink = (props, context) => {
-  const { act, data } = useBackend(context);
-  const {
-    flink,
-    their_quid,
-    viewer_quid,
-  } = data;
-
-  return (
-    flink && (
-      <Button
-        onClick={() => act("view_flist", {
-          their_quid: their_quid,
-          viewer_quid: viewer_quid,
-        })}
-        content="F-List"
-        color="transparent"
-        icon="link"
-        tooltip="View this character's F-List (if any)!"
-        tooltipPosition="bottom"
-        disabled={!flink}
-        mr={1} />
-    )
-  );
-};
 
 // / Sanitizes and marks up text
 const Text2HTML = (text) => {

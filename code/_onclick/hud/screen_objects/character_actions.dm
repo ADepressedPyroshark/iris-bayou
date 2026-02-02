@@ -113,15 +113,6 @@
 		var/msg = input(usr, "Help/Newbie Message", "Help/Newbie", null)
 		usr.client.newbie(msg)
 
-/atom/movable/screen/chardir_hud_button
-	name = "Character Directory"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "chardir"
-	screen_loc = ui_bayou
-
-/atom/movable/screen/chardir_hud_button/Click(location,control,params)
-	if(usr.client)
-		usr.client.show_character_directory()
 
 /atom/movable/screen/who
 	name = "Who"
@@ -132,133 +123,7 @@
 /atom/movable/screen/who/Click(location,control,params)
 	SSwho.Who(usr.client)
 
-/atom/movable/screen/flirt_hud_button
-	name = "Flirt with people!"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "flirt"
-	screen_loc = ui_flirt
 
-/atom/movable/screen/flirt_hud_button/Click(location,control,params)
-	var/mob/living/carbon/human/H = usr
-	if(!ishuman(usr))
-		to_chat(usr, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	H.emote("flirt")
-
-/atom/movable/screen/erp_button
-	name = "ERP with someone!"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "erp"
-	screen_loc = "EAST-1:4, SOUTH+2:11"
-
-/atom/movable/screen/erp_button/Click(location,control,params)
-	var/mob/living/carbon/human/H = usr
-	if(!ishuman(usr))
-		to_chat(usr, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	H.emote("erp")
-
-/atom/movable/screen/merp_button
-	name = "Open mechanical ERP window!"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "merp"
-	screen_loc = ui_merp
-
-/atom/movable/screen/merp_button/Click(location,control,params)
-	var/mob/living/carbon/human/H = usr
-	if(!ishuman(H))
-		to_chat(H, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	var/obj/item/hand_item/merp_doer/brick = new(H)
-
-	if(H.put_in_hands(brick))
-		to_chat(H, span_notice("Now click someone with this thing (or yourself)! Range is infinite, so you can totally interact with people across the bar!"))
-	else
-		qdel(brick)
-
-/// special cool button that turns into more buttons!
-/atom/movable/screen/foldout
-	name = "Cool Foldabutton"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "vore"
-	var/icon/closed_icon = 'icons/mob/screen_gen.dmi'
-	var/closed_state = "vore"
-	var/closed_loc = "EAST-1:-11, SOUTH+2:12"
-	var/icon/open_icon = 'icons/mob/screen_gen.dmi'
-	var/open_state = "vore"
-	var/open_loc = "EAST-1:-22, SOUTH+2:12"
-	var/list/foldies = list()
-	var/open = FALSE
-
-/atom/movable/screen/foldout/Initialize(mapload)
-	. = ..()
-	InitButtons()
-
-/atom/movable/screen/foldout/Click(location,control,params)
-	if(!usr.client || !ismob(usr))
-		return
-	if(open)
-		FoldUp(usr)
-	else
-		UnFold(usr)
-
-/atom/movable/screen/foldout/proc/UnFold(mob/user)
-	if(open)
-		return
-	open = TRUE
-	for(var/atom/movable/screen/sub_button/S in foldies)
-		S.Show()
-	icon = open_icon
-	icon_state = open_state
-	screen_loc = open_loc
-
-/atom/movable/screen/foldout/proc/FoldUp(mob/user)
-	if(!open)
-		return
-	open = FALSE
-	for(var/atom/movable/screen/sub_button/S in foldies)
-		S.Hide()
-	icon = closed_icon
-	icon_state = closed_state
-	screen_loc = closed_loc
-
-/atom/movable/screen/foldout/proc/InitButtons(mob/user)
-	var/list/inittedbuttons = list()
-	for(var/i in 1 to LAZYLEN(foldies))
-		var/atom/movable/screen/sub_button/S = foldies[i]
-		S = new S()
-		S.parent = src
-		S.hud = hud
-		S.Hide()
-		inittedbuttons += S
-	foldies = inittedbuttons
-
-////////////////////////////////////////////////////////////
-/atom/movable/screen/sub_button // aka, my cl-
-	name = "sub_button"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "sub_button"
-	// screen_loc = ui_vore_b1
-	var/atom/movable/screen/foldout/parent
-
-/atom/movable/screen/sub_button/Click(location,control,params)
-	parent.FoldUp(usr)
-
-/atom/movable/screen/sub_button/proc/Hide()
-	alpha = 0
-	mouse_opacity = 0
-	var/client/C = extract_client(usr)
-	if(C)
-		C.screen -= src
-
-/atom/movable/screen/sub_button/proc/Show()
-	alpha = 255
-	mouse_opacity = 1
-	var/client/C = extract_client(usr)
-	if(C)
-		C.screen |= src
-
-////////////////////////////////////////////////////////////
 /*
 /atom/movable/screen/foldout/vore_button
 	name = "Vore Menu Menu"
@@ -291,13 +156,13 @@
 /atom/movable/screen/roll_hud_button/Click(location,control,params,)
 // This stuff needs to be changed because it was directly lifted from clothing
 	var/static/list/choices = list(
-			"Brawn" = image(icon = 'icons/obj/stationary.dmi', icon_state = "fitnessweight-w"),
-			"Awareness" = image(icon = 'icons/obj/status_display.dmi', icon_state = "ai_friend"),
-			"Toughness" = image(icon = 'modular_coyote/icons/objects/weapons.dmi', icon_state = "imperial_kite"),
-			"Moxie" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "mood9"),
-			"Smarts" = image(icon = 'modular_roguetown/items/books.dmi', icon_state = "ledger0"),
-			"Deftness" = image(icon = 'icons/obj/implants.dmi', icon_state = "warp"),
-			"Fate" = image(icon = 'icons/obj/economy.dmi', icon_state = "coin_iron_flip"),
+			"Brawn" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "brawn"),
+			"Awareness" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "awareness"),
+			"Toughness" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "toughness"),
+			"Moxie" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "moxie"),
+			"Smarts" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "smarts"),
+			"Deftness" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "deftness"),
+			"Fate" = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "fate"),
 		)
 	var/mob/user = usr
 	var/choice = show_radial_menu(user, src, choices, radius = 32,)
@@ -318,168 +183,6 @@
 			user.emote("special_luck")
 		else
 			return
-/*
-////////////////////////////////////////////////////////////
-/atom/movable/screen/sub_button/vore_menu
-	name = "Open the Vore Options!"
-	icon = 'icons/mob/screen_gen_vore.dmi'
-	icon_state = "vore_options"
-	screen_loc = "EAST-1:-22, SOUTH+2:23"
-
-/atom/movable/screen/sub_button/vore_menu/Click(location,control,params)
-	. = ..()
-	var/mob/living/L = usr
-	if(!ishuman(L))
-		to_chat(L, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	L?.insidePanel()
-	to_chat(L, span_notice("You opened the vore options! Hopefully!"))
-
-////////////////////////////////////////////////////////////
-/atom/movable/screen/sub_button/vorer_thing
-	name = "Vore someone!"
-	desc = "This will either give you an item to vore someone with, or vore whoever youre grabbing!"
-	icon = 'icons/mob/screen_gen_vore.dmi'
-	icon_state = "vore_eat"
-	screen_loc = "EAST-1:-22, SOUTH+2:23"
-
-/atom/movable/screen/sub_button/vorer_thing/Click(location,control,params)
-	. = ..()
-	var/mob/living/L = usr
-	if(!ishuman(L))
-		to_chat(L, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	L.emote("vore")
-
-////////////////////////////////////////////////////////////
-
-/atom/movable/screen/sub_button/eater_thing
-	name = "Feed someone to someone!"
-	desc = "This will either give you an item to feed someone to someone with, or feed whoever youre grabbing to whoever youre grabbing!"
-	icon = 'icons/mob/screen_gen_vore.dmi'
-	icon_state = "vore_feed"
-	screen_loc = "EAST-1:-22, SOUTH+2:23"
-
-/atom/movable/screen/sub_button/eater_thing/Click(location,control,params)
-	. = ..()
-	var/mob/living/L = usr
-	if(!ishuman(L))
-		to_chat(L, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	L.emote("feed")
-
-/atom/movable/screen/sub_button/enabler
-	name = "Enable Vore!"
-	desc = "Looks like your vore is off, click here to enable it!"
-	icon = 'icons/mob/screen_gen_vore.dmi'
-	icon_state = "vore_enable"
-	screen_loc = "EAST-1:-22, SOUTH+2:23"
-
-/atom/movable/screen/sub_button/enabler/Show()
-	if(CHECK_PREFS(usr, VOREPREF_MASTER))
-		return // already enabled
-	. = ..() // WINDOWS G, ENABLE
-
-/atom/movable/screen/sub_button/enabler/Click(location,control,params)
-	. = ..()
-	var/mob/living/L = usr
-	if(!ishuman(L))
-		to_chat(L, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	var/datum/preferences/P = extract_prefs(L)
-	P.allow_eating_sounds = TRUE
-	P.allow_digestion_sounds = TRUE
-	P.allow_digestion_damage = TRUE
-	P.allow_digestion_death = TRUE
-	P.allow_vore_messages = TRUE
-	P.allow_death_messages = TRUE
-	P.allow_being_prey = TRUE
-	P.allow_being_fed_to_others = TRUE
-	P.allow_being_fed_prey = TRUE
-	P.allow_seeing_belly_descriptions = TRUE
-	P.allow_being_sniffed = TRUE
-	P.master_vore_toggle = TRUE
-	P.save_character()
-	to_chat(L, span_notice("Vore Core online! Be sure to set up your vore preferences!"))
-*/
-/atom/movable/screen/erp_tools_button
-	name = "ERP Tools"
-	icon_state = "erp_tools"
-	screen_loc = "RIGHT-1:-7,South+2:0"
-
-/atom/movable/screen/erp_tools_button/Click(location,control,params)
-	var/mob/living/carbon/human/H = usr
-	if(!ishuman(usr))
-		to_chat(usr, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	var/static/list/choices = list(
-			"Smooch people, intent, direction and location varianced"   = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "kiss"         ),
-			"Feel people up, intent, direction and location varianced"  = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "touch"        ),
-			"Lick people, intent, direction, and location varianced"    = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "lick"         ),
-			"Flirt Menu"                                                = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "flirt"        ),
-			"Subtlest - Long & Short Range"                             = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "erp"          ),
-			"Vore Menu"                                                 = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "vore"         ),
-			"Mechanical Erotic Roleplay"                                = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "merp"         ),
-			"Private Panel"                                             = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "privatepanel" ),
-		)
-	var/mob/user = usr
-	var/choice = show_radial_menu(user, src, choices, radius = 28, ultradense = TRUE, linedir = NORTH)
-	if(!ishuman(usr))//Check after they select something just in case they've somehow switched to a non-human in the mean time
-		return
-	switch(choice)
-		if("Smooch people, intent, direction and location varianced")
-			H.emote("kisshorny")
-		if("Feel people up, intent, direction and location varianced")
-			H.emote("touchhorny")
-		if("Lick people, intent, direction, and location varianced")
-			H.emote("lickhorny")
-		if("Flirt Menu")
-			H.emote("flirt")
-		if("Subtlest - Long & Short Range")
-			H.emote("erp")
-		if("Mechanical Erotic Roleplay")
-			var/obj/item/hand_item/merp_doer/brick = new(H)
-			if(H.put_in_hands(brick))
-				to_chat(H, span_notice("Now click someone with this thing (or yourself)! Range is infinite, so you can totally interact with people across the bar!"))
-			else
-				qdel(brick)
-		if("Private Panel")
-			H.toggle_genitals()
-		if("Vore Menu")
-			var/static/list/vchoices = list(
-					"Vore"    = image(icon = 'icons/mob/screen_gen_vore.dmi', icon_state = "vore_eat"     ),
-					"Feed"    = image(icon = 'icons/mob/screen_gen_vore.dmi', icon_state = "vore_feed"    ),
-					"Enable"  = image(icon = 'icons/mob/screen_gen_vore.dmi', icon_state = "vore_enable"  ),
-					"Options" = image(icon = 'icons/mob/screen_gen_vore.dmi', icon_state = "vore_options" ),
-			)
-			var/vchoice = show_radial_menu(user, src, vchoices, radius = 28, ultradense = TRUE, linedir = NORTH)
-			if(!ishuman(usr))//Check after they select something just in case they've somehow switched to a non-human in the mean time
-				return
-			switch(vchoice)
-				if("Vore")
-					H.emote("vore")
-				if("Feed")
-					H.emote("feed")
-				if("Enable")
-					var/datum/preferences/P = extract_prefs(H)
-					P.allow_eating_sounds = TRUE
-					P.allow_digestion_sounds = TRUE
-					P.allow_digestion_damage = TRUE
-					P.allow_digestion_death = TRUE
-					P.allow_vore_messages = TRUE
-					P.allow_death_messages = TRUE
-					P.allow_being_prey = TRUE
-					P.allow_being_fed_to_others = TRUE
-					P.allow_being_fed_prey = TRUE
-					P.allow_seeing_belly_descriptions = TRUE
-					P.allow_being_sniffed = TRUE
-					P.master_vore_toggle = TRUE
-					P.save_character()
-					to_chat(H, span_notice("Vore Core online! Be sure to set up your vore preferences!"))
-				if("Options")
-					H?.insidePanel()
-					to_chat(H, span_notice("You opened the vore options! Hopefully!"))
-
 
 /atom/movable/screen/hand_items_button
 	name = "Personal Tools"
@@ -493,10 +196,8 @@
 		return
 	var/static/list/choices = list(
 			"Tail"        = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "tail"    ),
-			"Butt"        = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "butt"    ),
 			"Claw"        = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "claw"    ),
 			"Bite"        = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "bite"    ),
-			"Beans"       = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "beans"   ),
 			"Tend"        = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "tend"    ),
 			"Cuphand"     = image(icon = 'icons/mob/screen_gen.dmi', icon_state = "cuphand" ),
 		)
@@ -507,14 +208,10 @@
 	switch(choice)
 		if("Tail")
 			H.emote("tailer")
-		if("Butt")
-			H.emote("butt")
 		if("Claw")
 			H.emote("claw")
 		if("Bite")
 			H.emote("bite")
-		if("Beans")
-			H.emote("beans")
 		if("Tend")
 			H.emote("tend")
 		if("Cuphand")
@@ -667,21 +364,6 @@
 	H.emote("cuphand")
 
 ////////////////////////////////////////////////////////////
-/// Beans button
-/atom/movable/screen/beans_hud_button
-	name = "bean on people!"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "beans"
-	screen_loc = "EAST-1:4, SOUTH+4:8"
-
-/atom/movable/screen/beans_hud_button/Click(location,control,params)
-	var/mob/living/carbon/human/H = usr
-	if(!ishuman(usr))
-		to_chat(usr, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	H.emote("beans")
-
-////////////////////////////////////////////////////////////
 /// Tend button
 /atom/movable/screen/tend_hud_button
 	name = "tend on people!"
@@ -696,23 +378,6 @@
 		return
 	H.emote("tend")
 
-////////////////////////////////////////////////////////////
-/// Butt button
-/atom/movable/screen/butt_hud_button
-	name = "butt on people!"
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "butt"
-	screen_loc = "EAST-1:28, SOUTH+4:-14"
-
-/atom/movable/screen/butt_hud_button/Click(location,control,params)
-	var/mob/living/carbon/human/H = usr
-	if(!ishuman(usr))
-		to_chat(usr, span_alert("Sorry! You've gotta be a fully spawned in character with hopes and dreams to use this!"))
-		return
-	if(!H.has_butt())
-		to_chat(H, span_alert("[H], you have no butt!"))
-		return
-	H.emote("butt")
 
 /atom/movable/screen/pvp_focus_toggle
 	name = "PVP focus On/Off"

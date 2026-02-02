@@ -86,15 +86,12 @@
 /mob/proc/get_photo_description(obj/item/camera/camera)
 	return "a ... thing?"
 
-/mob/proc/show_message(msg, type, alt_msg, alt_type, pref_check, datum/rental_mommy/chat/momchat, force)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/mob/proc/show_message(msg, type, alt_msg, alt_type, pref_check, force)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	if(!force)
 		if(audiovisual_redirect)
 			audiovisual_redirect.show_message(msg ? "<avredirspan class='small'>[msg]</avredirspan>" : null, type, alt_msg ? "<avredirspan class='small'>[alt_msg]</avredirspan>" : null, alt_type)
 
 		if(!client)
-			return
-		
-		if(pref_check && !CHECK_PREFS(src, pref_check))
 			return
 
 		msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
@@ -121,11 +118,6 @@
 				to_chat(src, "<I>... You can almost hear something ...</I>")
 			return
 	var/msg_backup = msg
-	///NOW HOLD ON THERE BUCKO, I think you're forgetting something~
-	if(momchat && momchat.furry_dating_sim && (isdummy(momchat.source) || CHECK_PREFS(src, SHOW_ME_HORNY_FURRIES))) // its right here
-		if(!momchat.recipiant)
-			momchat.recipiant = src // for me? aw ya shouldntve!
-		msg = SSchat.BuildHornyFurryDatingSimMessage(momchat) // in my subsystem~
 	if(!msg || !length(msg))
 		msg = msg_backup // just in case
 	to_chat(src, msg)
@@ -168,7 +160,6 @@
 	if(!length(hearers)) // yes, hearers is correct
 		return
 	hearers -= ignored_mobs
-	var/datum/rental_mommy/chat/momchat = LAZYLEN(data) ? data["mom"] : null
 
 	var/saycolor = src.get_chat_color()
 	var/targetsaycolor = null
@@ -202,13 +193,8 @@
 	//if(visible_message_flags & EMOTE_MESSAGE)
 	//	message = "<span class='emote'><b>[src]</b> [message]</span>"
 
-	if(momchat)
-		momchat.message = message
-
 	for(var/mob/M in hearers)
 		if(!M.client)
-			continue
-		if(pref_check && !CHECK_PREFS(M, pref_check))
 			continue
 		//This entire if/else chain could be in two lines but isn't for readabilty's sake.
 		var/blind = M.is_blind()
@@ -229,17 +215,7 @@
 				if(!!target)
 					var/sanitizedtargetsaycolor = M.client.sanitize_chat_color(targetsaycolor)
 					msg = color_keyword(msg, sanitizedtargetsaycolor, target.name)
-			var/datum/rental_mommy/chat/yourmom
-			if(momchat && M.should_hornify(momchat))
-				yourmom = SSrentaldatums.CheckoutChatMommy()
-				yourmom.copy_mommy(momchat)
-				yourmom.recipiant = M
-				yourmom.message = msg
-				yourmom.hide_name_n_verb = TRUE
-			M.show_message(msg, MSG_VISUAL, msg, MSG_AUDIBLE, momchat = yourmom)
-			if(yourmom)
-				yourmom.checkin()
-	momchat?.checkin()
+			M.show_message(msg, MSG_VISUAL, msg, MSG_AUDIBLE)
 
 ///Adds the functionality to self_message.
 /mob/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, mob/target, target_message, visible_message_flags = NONE, pref_check, list/data = list())
@@ -285,23 +261,15 @@
 	//if(audible_message_flags & EMOTE_MESSAGE)
 	//	message = "<span class='emote'><b>[src]</b> [message]</span>"
 
-	var/datum/rental_mommy/chat/momchat = LAZYLEN(data) ? data["mom"] : null
 
 	var/saycolor = src.get_chat_color()
 
 	for(var/mob/M in hearers)
-		if(pref_check && !CHECK_PREFS(M, pref_check))
+		if(pref_check)
 			continue
 		var/msg = message
 		//if(M == src)
 			//msg = self_message
-		var/datum/rental_mommy/chat/yamum = null
-		if(momchat && M.should_hornify(momchat))
-			yamum = SSrentaldatums.CheckoutChatMommy()
-			yamum.copy_mommy(momchat)
-			yamum.recipiant = M
-			yamum.message = message
-			yamum.hide_name_n_verb = TRUE
 		if(!M.can_hear())
 			msg = deaf_message
 		if(M.client?.prefs.color_chat_log)
@@ -310,10 +278,7 @@
 		if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags))
 			M.create_chat_message(src, raw_message = msg, runechat_flags = audible_message_flags)
 		if(!CHECK_BITFIELD(audible_message_flags, ONLY_OVERHEAD))
-			M.show_message(msg, MSG_AUDIBLE, msg, MSG_VISUAL, momchat = yamum)
-		if(yamum)
-			yamum.checkin()
-	momchat?.checkin()
+			M.show_message(msg, MSG_AUDIBLE, msg, MSG_VISUAL)
 
 /**
  * Show a message to all mobs in earshot of this one
@@ -718,7 +683,7 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(oocnotes, "\n", "<BR>")), text("window=[];size=500x200", name))
 		onclose(usr, "[name]")
 	if(href_list["enlargeImageCreature"])
-		var/followers_clinic_full_of_big_strong_gay_dogs_in_it = SSchat.GetPicForMode(src, MODE_PROFILE_PIC)
+		var/followers_clinic_full_of_big_strong_gay_dogs_in_it = PfpHostLink(profilePicture)
 		var/dat = {"
 			<img src='[followers_clinic_full_of_big_strong_gay_dogs_in_it]' width='100%' height='100%' 'object-fit: scale-down;'>
 			<br>
@@ -1273,19 +1238,6 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 	var/datum/language_holder/H = get_language_holder()
 	H.open_language_menu(usr)
 
-/mob/verb/set_taste()
-	set name = "Set how you taste"
-	set category = "IC"
-
-	var/list/taste = SSlistbank.get_tastes(src)
-	var/myflavor = "Bingus"
-	for(var/i in taste)
-		myflavor = i
-	var/message = stripped_input(usr, "Yum", "How do you taste?", "[myflavor]", 100, FALSE)
-	if(message)
-		var/list/newflavor = list("[message]" = 1)
-		SSlistbank.catalogue_tastes(src, newflavor, TRUE)
-		to_chat(usr, span_notice("You now taste like [message]"))
 
 ///Adjust the nutrition of a mob
 /mob/proc/adjust_nutrition(change, max = INFINITY) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
@@ -1325,10 +1277,31 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 /// Gets the combined speed modification of all worn items
 /// Except base mob type doesnt really wear items
 /mob/proc/equipped_speed_mods()
+	var/str_mod = get_str_mod()
 	for(var/obj/item/I in held_items)
 		if(I.item_flags & SLOWS_WHILE_IN_HAND)
-			. += I.slowdown
+			. += (I.slowdown * str_mod)
 
+/mob/proc/get_str_mod()
+	var/str_mod = 1
+	switch(get_stat(STAT_INTELLIGENCE)) // COOLSTAT IMPLEMENTATION: INTELLIGENCE
+		if(0, 1)
+			str_mod = 3
+		if(2)
+			str_mod = 2
+		if(3)
+			str_mod = 1.5
+		if(4, 5)
+			str_mod = 1
+		if(6)
+			str_mod = 0.85
+		if(7)
+			str_mod = 0.75
+		if(8)
+			str_mod = 0.5
+		if(9)
+			str_mod = 0.01
+	return str_mod
 
 /mob/proc/set_stat(new_stat)
 	if(new_stat == stat)
