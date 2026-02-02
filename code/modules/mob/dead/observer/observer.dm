@@ -138,20 +138,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	grant_all_languages()
 	show_data_huds()
 	data_huds_on = 1
-	INVOKE_ASYNC(src, PROC_REF(slam_dunk_to_main_menu))
-
-/mob/dead/observer/proc/slam_dunk_to_main_menu()
-	if(!SSchat.forbid_ghosting)
-		return
-	if(IsAdminGhost(src, TRUE))
-		return TRUE
-	if(client)
-		if(check_rights_for(client, R_ADMIN))
-			return TRUE
-		abandon_mob()
-		return TRUE
-	sleep(0.5 SECONDS)
-	INVOKE_ASYNC(src, PROC_REF(slam_dunk_to_main_menu))
 
 /mob/dead/observer/get_photo_description(obj/item/camera/camera)
 	if(!invisibility || camera.see_ghosts)
@@ -298,8 +284,7 @@ Works together with spawning an observer, noted above.
 	if (client && client.prefs && client.prefs.auto_ooc)
 		client.prefs.chat_toggles |= CHAT_OOC
 	transfer_ckey(ghost, FALSE)
-	if(!QDELETED(ghost))
-		ghost.client.init_verbs()
+	// Removed early init_verbs() call - verbs will be initialized after Login() in BYOND 516
 	if(penalize)
 		var/penalty = 3 MINUTES
 		var/roundstart_quit_limit = 3 MINUTES
@@ -430,7 +415,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			destination = get_step(destination, WEST)
 
 		abstract_move(destination)//Get out of closets and such as a ghost
-	slam_dunk_to_main_menu()
 
 /mob/dead/observer/verb/reenter_corpse()
 	set category = "Ghost"

@@ -22,6 +22,7 @@
 #include "code\__DEFINES\_bitfields.dm"
 #include "code\__DEFINES\_globals.dm"
 #include "code\__DEFINES\_helpers.dm"
+#include "code\__DEFINES\_html.dm"
 #include "code\__DEFINES\_protect.dm"
 #include "code\__DEFINES\_tick.dm"
 #include "code\__DEFINES\access.dm"

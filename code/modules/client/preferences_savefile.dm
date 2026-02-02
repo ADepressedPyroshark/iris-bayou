@@ -53,11 +53,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return TRUE
 	for(var/clog in missing_updates)
 		switch(clog)
-			if(PMR_ADDED_COOLCHAT) // i broke it =3
-				S["chat_toggles"] >> chat_toggles
-				chat_toggles |= CHAT_SEE_COOLCHAT
-				chat_toggles = sanitize_integer(chat_toggles, 0, INFINITY, TOGGLES_DEFAULT_CHAT)
-				current_revision |= PMR_ADDED_COOLCHAT
 			if(PMR_ADDED_RADIO_BLURBLES) // i broke it =3
 				S["chat_toggles"] >> chat_toggles
 				chat_toggles |= CHAT_HEAR_RADIOBLURBLES
@@ -130,10 +125,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 				// WRITE_FILE(S["faved_interactions"], faved_interactions)
 				current_version |= PMC_UNBREAK_FAVORITE_PLAPS
 			if(PMC_MY_PDA_FLIES_IN_FULL_COLOR) // i broke it =3
-				pda_skin = "Random!"
-				WRITE_FILE(S["pda_skin"], pda_skin)
-				current_version |= PMC_MY_PDA_FLIES_IN_FULL_COLOR
-			if(PMC_MOMMYCHAT_IS_COOL) // i broke it =3
 				pda_skin = "Random!"
 				WRITE_FILE(S["pda_skin"], pda_skin)
 				current_version |= PMC_MY_PDA_FLIES_IN_FULL_COLOR
@@ -289,7 +280,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["auto_ooc"]			>> auto_ooc
 	S["no_tetris_storage"]		>> no_tetris_storage
 	S["aghost_squelches"]		>> aghost_squelches
-	S["see_furry_dating_sim"]		>> see_furry_dating_sim
 	S["see_pfp_max_hight"]		>> see_pfp_max_hight
 	S["see_pfp_max_widht"]		>> see_pfp_max_widht
 
@@ -357,7 +347,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	modless_key_bindings    = sanitize_islist(modless_key_bindings, list())
 	aghost_squelches        = sanitize_islist(aghost_squelches, list())
 	admin_wire_tap          = sanitize_integer(admin_wire_tap, TRUE)
-	see_furry_dating_sim    = sanitize_integer(see_furry_dating_sim, TRUE)
 	see_pfp_max_hight           = sanitize_integer(see_pfp_max_hight, 0, 5000, 300)
 	see_pfp_max_widht            = sanitize_integer(see_pfp_max_widht, 0, 5000, 300)
 
@@ -464,7 +453,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["pda_ringmessage"], pda_ringmessage)
 	WRITE_FILE(S["key_bindings"], key_bindings)
 	WRITE_FILE(S["modless_key_bindings"], modless_key_bindings)
-	WRITE_FILE(S["see_furry_dating_sim"], see_furry_dating_sim)
 	WRITE_FILE(S["see_pfp_max_hight"], see_pfp_max_hight)
 	WRITE_FILE(S["see_pfp_max_widht"], see_pfp_max_widht)
 
@@ -820,13 +808,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	// !! COYOTE SAVE FILE STUFF !!
 	S["profilePicture"] >> profilePicture // Profile picklies
 	S["pfphost"] 		>> pfphost
-	// !! DAN IS COOL SAVE FILE STUFF !!
-	var/list/pfp_list = safe_json_decode(S["ProfilePics"])
-	ProfilePics = islist(pfp_list) ? pfp_list : list()
-	var/list/milfhub = safe_json_decode(S["mommychat_settings"])
-	mommychat_settings = islist(milfhub) ? milfhub : list()
-	S["visualchat_use_contrasting_color"]		>> visualchat_use_contrasting_color // Hair gradients electric boogaloo 2!!
-	S["visualchat_see_horny_radio"]		>> visualchat_see_horny_radio // Hair gradients electric boogaloo 2!!
 
 	S["gradient_color"]		>> features_override["grad_color"] // Hair gradients!
 	S["gradient_style"]		>> features_override["grad_style"] // Hair gradients electric boogaloo 2!!
@@ -896,8 +877,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["historical_banked_points"] >> historical_banked_points
 
 	//sanitize data
-	visualchat_use_contrasting_color  = sanitize_integer(visualchat_use_contrasting_color, 0, 1, initial(visualchat_use_contrasting_color))
-	visualchat_see_horny_radio        = sanitize_integer(visualchat_see_horny_radio, 0, 1, initial(visualchat_see_horny_radio))
 	saved_finished_quests             = sanitize_islist(saved_finished_quests, list())
 	saved_active_quests               = sanitize_islist(saved_active_quests, list())
 	dm_open                           = sanitize_integer(dm_open, TRUE)
@@ -1082,8 +1061,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	creature_profilepic = sanitize_text(creature_profilepic)
 	creature_pfphost 	= sanitize_inlist(creature_pfphost, GLOB.pfp_filehosts, "")
 
-	SSchat.SanitizeUserImages(src)
-	SSchat.SanitizeUserPreferences(src)
 
 	features_override["grad_color"]		= sanitize_hexcolor(features_override["grad_color"], 6, FALSE, default = COLOR_ALMOST_BLACK)
 	features_override["grad_style"]		= sanitize_inlist(features_override["grad_style"], GLOB.hair_gradients, "none")
@@ -1384,14 +1361,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["profilePicture"],				profilePicture)
 	WRITE_FILE(S["pfphost"],					pfphost)
 	// !! DEER GETS EATEN BY COYOTE !!
-	var/pfpjson = safe_json_encode(ProfilePics)
-	if(pfpjson)
-		WRITE_FILE(S["ProfilePics"], pfpjson)
-	var/milfjson = safe_json_encode(mommychat_settings)
-	if(milfjson)
-		WRITE_FILE(S["mommychat_settings"], milfjson)
-	WRITE_FILE(S["visualchat_use_contrasting_color"],		visualchat_use_contrasting_color)
-	WRITE_FILE(S["visualchat_see_horny_radio"],		visualchat_see_horny_radio)
 
 	WRITE_FILE(S["creature_profilepic"],		creature_profilepic)
 	WRITE_FILE(S["creature_pfphost"],			creature_pfphost)

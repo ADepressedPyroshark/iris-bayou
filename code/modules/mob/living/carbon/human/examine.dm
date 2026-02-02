@@ -73,12 +73,11 @@ GLOBAL_LIST_INIT(personalitytrait2description, list(
 		if(HAS_TRAIT(L, TRAIT_PROSOPAGNOSIA))
 			obscure_name = TRUE
 
-	var/datum/preferences/P = extract_prefs(src)
-	. = list("<span class='info'>*---------*\n")
-	if(P)
-		var/followers_clinic_full_of_big_strong_gay_dogs_in_it = SSchat.GetPicForMode(src, MODE_PROFILE_PIC)
-		. += "<img src='[followers_clinic_full_of_big_strong_gay_dogs_in_it]' height='auto' width='auto' max-width='[P.see_pfp_max_widht]px' max-height='[P.see_pfp_max_hight]px'>"
-	. += span_info("<font size=2>This is <EM>[!obscure_name ? name : "Unknown"]</EM>! [t_He] [t_is] a [dna.custom_species ? dna.custom_species : dna.species.name]!</font>")
+	. = list("<span class='info'>*---------*\nThis is <EM>[!obscure_name ? name : "Unknown"]</EM>! [t_He] [t_is] a [dna.custom_species ? dna.custom_species : dna.species.name]!")
+
+	if (profilePicture)
+		. += "<a href='?src=[REF(src)];enlargeImage=1'><img src='[PfpHostLink(profilePicture, pfphost)]' width='125' height='auto' max-height='300'></a>"
+
 
 	var/vampDesc = ReturnVampExamine(user) // Vamps recognize the names of other vamps.
 	var/vassDesc = ReturnVassalExamine(user) // Vassals recognize each other's marks.

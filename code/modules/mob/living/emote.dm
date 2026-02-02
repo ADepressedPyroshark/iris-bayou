@@ -725,8 +725,6 @@
 	key_third_person = "custom"
 	message = null
 	emote_type = EMOTE_VISIBLE
-	mommychat = TRUE
-	mommychat_partial = FALSE // full blown
 
 /datum/emote/living/custom/proc/check_invalid(mob/user, input)
 	if(stop_bad_mime.Find(input, 1, 1))
@@ -754,7 +752,6 @@
 		message = params
 		if(type_override)
 			emote_type = type_override
-	original_message = message
 	message = user.say_emphasis(message)
 	var/msg_check = user.say_narrate_replace(message, user)
 	if(msg_check)
@@ -765,7 +762,6 @@
 	. = ..()
 	omit_left_name = FALSE
 	message = null
-	original_message = null
 
 /datum/emote/living/custom/replace_pronoun(mob/user, message)
 	return message

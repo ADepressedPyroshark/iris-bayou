@@ -102,9 +102,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/max_chat_length = CHAT_MESSAGE_LENGTH_DEFAULT
 	var/chat_width = CHAT_MESSAGE_WIDTH
 	var/see_chat_non_mob = TRUE
-	var/see_furry_dating_sim = TRUE
-	var/visualchat_see_horny_radio = TRUE
-	var/visualchat_use_contrasting_color = TRUE
 	///Whether emotes will be displayed on runechat. Requires chat_on_map to have effect. Boolean.
 	var/see_rc_emotes = TRUE
 	///Whether to apply mobs' runechat color to the chat log as well
@@ -246,49 +243,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/see_pfp_max_hight = 300
 	var/see_pfp_max_widht = 300
 
-	var/list/ProfilePics = list(
-		list(
-			"Mode" = MODE_PROFILE_PIC,
-			"Host" = "",
-			"URL" = "",
-		),
-		list(
-			"Mode" = MODE_SAY,
-			"Host" = "",
-			"URL" = "",
-		),
-		list(
-			"Mode" = MODE_ASK,
-			"Host" = "",
-			"URL" = "",
-		),
-		list(
-			"Mode" = MODE_SING,
-			"Host" = "",
-			"URL" = "",
-		),
-		list(
-			"Mode" = MODE_EXCLAIM,
-			"Host" = "",
-			"URL" = "",
-		),
-		list(
-			"Mode" = MODE_YELL,
-			"Host" = "",
-			"URL" = "",
-		),
-		list(
-			"Mode" = MODE_WHISPER,
-			"Host" = "",
-			"URL" = "",
-		),
-		list(
-			"Mode" = ":example:",
-			"Host" = "",
-			"URL" = "",
-		),
-	)
-	var/list/mommychat_settings = list() // will be set by SSchat (goodness me)
 
 	/// Quirk list
 	/// okay lets compromise, we'll have type paths, but they're strings, happy?
@@ -527,7 +481,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			if(jobban_isbanned(user, "appearance"))
 				dat += "<b>You are banned from using custom names and appearances. You can continue to adjust your characters, but you will be randomised once you join the game.</b><br>"
 
-			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Configure VisualChat / Profile Pictures!</a><BR>"
+
 			dat += "<b>Name:</b> "
 			dat += "<a href='?_src_=prefs;preference=name;task=input'>[real_name]</a><BR>"
 
@@ -552,8 +506,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "</td>"
 			//Right column
 			// dat +="<td width='30%' valign='top'>"
-			// // dat += "<h2>Profile Picture ([pfphost]):</h2><BR>"
-			// // dat += "<b>Picture:</b> <a href='?_src_=prefs;preference=ProfilePicture;task=input'>[profilePicture ? "<img src=[PfpHostLink(profilePicture, pfphost)] width='125' height='auto' max-height='300'>" : "Upload a picture!"]</a><BR>"
+			// dat += "<h2>Profile Picture ([pfphost]):</h2><BR>"
+			// dat += "<b>Picture:</b> <a href='?_src_=prefs;preference=ProfilePicture;task=input'>[profilePicture ? "<img src=[PfpHostLink(profilePicture, pfphost)] width='125' height='auto' max-height='300'>" : "Upload a picture!"]</a><BR>"
 			// dat += "<h2>Simple Creature Profile Picture ([creature_pfphost]):</h2><BR>"
 			// dat += "<b>Picture:</b> <a href='?_src_=prefs;preference=CreatureProfilePicture;task=input'>[creature_profilepic ? "<img src=[PfpHostLink(creature_profilepic, creature_pfphost)] width='125' height='auto' max-height='300'>" : "Upload a picture!"]</a><BR>"
 			// dat += "</td>"
@@ -1001,7 +955,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += APPEARANCE_CATEGORY_COLUMN
 			dat += "<h3>Flavor Text</h3>"
 			dat += "<a href='?_src_=prefs;preference=flavor_text;task=input'><b>Set Examine Text</b></a><br>"
-			dat += "<a href='?_src_=prefs;preference=setup_hornychat;task=input'>Configure VisualChat / Profile Pictures!</a><BR>"
 			if(length(features["flavor_text"]) <= 40)
 				if(!length(features["flavor_text"]))
 					dat += "\[...\]"

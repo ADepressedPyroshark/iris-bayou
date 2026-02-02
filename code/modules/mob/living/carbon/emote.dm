@@ -184,10 +184,6 @@
 	else
 		qdel(licky)
 
-/datum/emote/living/carbon/lick_horny
-	key = "lickhorny"
-	key_third_person = "licks"
-	restraint_check = TRUE
 
 
 /datum/emote/living/carbon/touch
@@ -229,11 +225,6 @@
 	else
 		qdel(touchy)
 
-/datum/emote/living/carbon/kiss_horny
-	key = "kisshorny"
-	key_third_person = "kisses"
-	restraint_check = TRUE
-
 
 /datum/emote/living/carbon/tend
 	key = "tend"
@@ -254,38 +245,6 @@
 	else
 		qdel(tendy)
 
-//We are not naming this 'beaner' so help me god
-/datum/emote/living/carbon/bean
-	key = "bean"
-	key_third_person = "beans"
-	restraint_check = TRUE
-
-/datum/emote/living/carbon/bean/run_emote(mob/user)
-	. = ..()
-	if(user.get_active_held_item())
-		to_chat(user, span_warning("Your beans are too full to bean the beans, what the hell are you doing???!?"))
-		return
-	var/obj/item/hand_item/beans/bean = new(user)
-	if(user.put_in_hands(bean))
-		to_chat(user, span_notice("You ready your beans for WAR!!"))
-	else
-		qdel(bean)
-
-/datum/emote/living/carbon/bean_war
-	key = "warbean"
-	key_third_person = "warbeans"
-	restraint_check = TRUE
-
-/datum/emote/living/carbon/bean_war/run_emote(mob/user)
-	. = ..()
-	if(user.get_active_held_item())
-		to_chat(user, span_warning("Your beans are too full to bean the beans, what the hell are you doing???!?"))
-		return
-	var/obj/item/hand_item/beans_war/warbean = new(user)
-	if(user.put_in_hands(warbean))
-		to_chat(user, span_notice("You ready your warbeans for REAL WAR!!"))
-	else
-		qdel(warbean)
 
 /datum/emote/living/carbon/cuphand
 	key = "cuphand"
@@ -604,12 +563,6 @@
 	else
 		qdel(tentacle)
 
-//Mage grab spell
-/datum/emote/living/carbon/butt
-	key = "butt"
-	key_third_person = "butting you"
-	restraint_check = TRUE
-
 //Rock throw//
 /datum/emote/living/carbon/rocker
 	key = "rocks"
@@ -856,14 +809,6 @@
 	message = "gives both barrels of the bird!"
 	message_param = "double barrels the birds at %t!"
 
-/datum/emote/living/carbon/vlick
-	key = "vlick"
-	message = "pretends to lick between their spread pointer and middle finger!"
-
-/datum/emote/living/carbon/cheekpoke
-	key = "cheekpoke"
-	message = "pushes their tongue into their cheek."
-
 /datum/emote/living/carbon/headbob
 	key = "headbob"
 	message = "is bobbing their head to something."
@@ -875,21 +820,6 @@
 /datum/emote/living/carbon/hairchew
 	key = "hairchew"
 	message = "chews on their bangs a little bit."
-
-/datum/emote/living/carbon/lewdintent
-	key = "lewdintent"
-	restraint_check = TRUE
-
-/datum/emote/living/carbon/lewdintent/run_emote(mob/user)
-	. = ..()
-	if(user.get_active_held_item())
-		to_chat(user, span_warning("Your active hand is full, you can't wear your sleeve on your shoulder! Don't ask why!"))
-		return
-	var/obj/item/clothing/accessory/heart/dtf = new(user)
-	if(user.put_in_hands(dtf))
-		to_chat(user, span_notice("You're ready to make it clear to others what it is you REALLY want!"))
-	else
-		qdel(dtf)
 
 /datum/emote/living/carbon/intentlfg
 	key = "intentlfg"

@@ -335,11 +335,6 @@ GLOBAL_VAR_INIT(crotch_call_cooldown, 0)
 	..()	//CITADEL CHANGE - removes a tab from behind this ..() so that flavortext can actually be examined
 
 	// Gremling is just gonna do gremlin things and add this here > w> Cant be assed trying to fit this in somewhere else for now.
-	if(href_list["enlargeImage"])
-		var/dat = {"<img src='[SSchat.GetPicForMode(src, MODE_PROFILE_PIC)]'>"}
-		var/datum/browser/popup = new(usr, "enlargeImage", "Full Sized Picture!",1024,1024)
-		popup.set_content(dat)
-		popup.open()
 
 	if(href_list["show_tattoos"])
 		if(get_dist(usr, src) > TATTOO_VISIBILITY_RANGE)

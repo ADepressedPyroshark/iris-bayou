@@ -506,13 +506,6 @@
 /mob/living/carbon/human/species/aethergiest_brown
 	race = /datum/species/feral/aethergiest/brown
 
-/datum/species/feral/aethergiest/maid
-	name = "Maid Deathclaw"
-	id = "maidclaw"
-	roundstart = TRUE
-/mob/living/carbon/human/species/aethergiest_maid
-	race = /datum/species/feral/aethergiest/maid
-
 /datum/species/feral/aethergiest/queen
 	name = "Queen Deathclaw"
 	id = "deathclaw_queen"

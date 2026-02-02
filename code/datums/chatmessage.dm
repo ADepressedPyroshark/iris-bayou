@@ -46,7 +46,7 @@
  * * extra_classes - Extra classes to apply to the span that holds the text
  * * lifespan - The lifespan of the message in deciseconds
  */
-/datum/chatmessage/New(text, atom/target, mob/owner, list/extra_classes = list(), lifespan = CHAT_MESSAGE_LIFESPAN, list/data = list(), datum/rental_mommy/chat/mommy = null)
+/datum/chatmessage/New(text, atom/target, mob/owner, list/extra_classes = list(), lifespan = CHAT_MESSAGE_LIFESPAN)
 	. = ..()
 	if (!istype(target))
 		CRASH("Invalid target given for chatmessage")
@@ -54,26 +54,6 @@
 		stack_trace("/datum/chatmessage created with [isnull(owner) ? "null" : "invalid"] mob owner")
 		qdel(src)
 		return
-	data = listify(data)
-	if(mommy)
-		if(mommy.display_turf && mommy.display_turf != target)
-			alt_display = mommy.display_turf
-			offscreen = TRUE
-			if(mommy.is_thing)
-				is_thing = TRUE
-				if(ismob(alt_display.loc))
-					alt_display = alt_display.loc
-			else if(mommy.is_thing)
-				is_thing = TRUE
-				if(ismob(target.loc))
-					target = target.loc
-			if(mommy.runechat_mode == "hidden_pathable")
-				stick_on_turf = TRUE
-		else
-			alt_display = data["display_turf"] || null
-			if((get_dist(owner, (alt_display || target)) > 6 || data["is_far"])) // SD screens are 7 radius, but the UI covers a bit of that
-				offscreen = TRUE
-	eavesdrop = data["is_eaves"] || FALSE
 	INVOKE_ASYNC(src,PROC_REF(generate_image), text, target, owner, extra_classes, lifespan)
 
 /datum/chatmessage/Destroy()
@@ -84,7 +64,6 @@
 	owned_by = null
 	message_loc = null
 	message = null
-	alt_display = null
 	return ..()
 
 /**
@@ -170,8 +149,8 @@
 	approx_lines = max(1, mheight / CHAT_MESSAGE_APPROX_LHEIGHT)
 
 	// Translate any existing messages upwards, apply exponential decay factors to timers
-	var/atom/remembered_location = alt_display || target
-	message_loc = alt_display || target
+	var/atom/remembered_location = target
+	message_loc = target
 	if(stick_on_turf)
 		message_loc = get_turf(message_loc)
 	// if(offscreen && get_dist(owner, target) > 6) // SD screens are 7 radius, but the UI covers a bit of that
@@ -213,15 +192,9 @@
 					m.scheduled_destruction = world.time + remaining_time
 					addtimer(CALLBACK(m,PROC_REF(end_of_life)), remaining_time, TIMER_UNIQUE|TIMER_OVERRIDE)
 
-	if(SSchat.debug_chud)
-		var/turf/ownerturf = get_turf(owner)
-		var/turf/targetturf = get_turf(message_loc)
-		ownerturf.Beam(targetturf, icon_state = "g_beam", time = 3 SECONDS)
-		ownerturf.Beam(get_turf(target), icon_state = "1-full", time = 3 SECONDS)
-
 	// Build message image
 	message = image(loc = message_loc, layer = CHAT_LAYER)
-	message.plane = SSchat.chat_display_plane
+	message.plane = CHAT_PLANE
 	message.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART
 	message.alpha = 0
 	var/hight = (alt_display || offscreen) ? 0 : (owner.bound_height + 7) // +7 cus progress bars
@@ -268,7 +241,7 @@
  * * raw_message - The text content of the message
  * * spans - Additional classes to be added to the message
  */
-/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE, list/data = list(), datum/rental_mommy/chat/mommy = null)
+/mob/proc/create_chat_message(atom/movable/speaker, datum/language/message_language, raw_message, list/spans, runechat_flags = NONE)
 	// Ensure the list we are using, if present, is a copy so we don't modify the list provided to us
 	spans = spans ? spans.Copy() : list()
 
@@ -283,24 +256,11 @@
 	if (originalSpeaker != src && speaker == src)
 		return
 
-	var/datum/preferences/P = extract_prefs(speaker)
-	if(P)
-		var/list/m_images = P.ProfilePics.Copy()
-		if(LAZYLEN(raw_message) && istext(raw_message))
-			var/list/splittify = splittext(raw_message, ":")
-			if(LAZYLEN(splittify) > 1)
-				math:
-					for(var/splut in splittify)
-						var/testpart = ":[splut]:"
-						for(var/list/moud in m_images)
-							if(moud["Mode"] == testpart)
-								raw_message = replacetext(raw_message, testpart, "") // remove the custom mode from the message
-								break math // mathematical
 	// Display visual above source
 	if(runechat_flags & EMOTE_MESSAGE)
-		new /datum/chatmessage(raw_message, speaker, src, list("emote", "italics"), null, data, mommy)
+		new /datum/chatmessage(raw_message, speaker, src, list("emote", "italics"))
 	else
-		new /datum/chatmessage(lang_treat(speaker, message_language, raw_message, spans, null, TRUE), speaker, src, spans, null, data, mommy)
+		new /datum/chatmessage(lang_treat(speaker, message_language, raw_message, spans, null, TRUE), speaker, src, spans)
 
 
 // Tweak these defines to change the available color ranges

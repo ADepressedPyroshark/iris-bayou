@@ -58,8 +58,6 @@
 				output += "<center><p><a href='byond://?src=[REF(src)];quirkconversion=1'>Click here to do something about that!</a></p>"
 			else
 				output += "<center><p><a href='byond://?src=[REF(src)];quirks=1'>Configure Quirks!</a></p>"
-		output += "<center><p><a href='byond://?src=[REF(src)];show_hornychat=1'>Open VisualChat / Profile Pic Settings!</a></p>"
-		// output += "<center><p><a href='byond://?src=[REF(src)];show_hornychat=1'>Configure Profile Pics!</a></p>"
 
 	if(SSticker.current_state <= GAME_STATE_PREGAME)
 		output += "<p>Please be patient, the game is starting soon!</p>"
@@ -542,7 +540,7 @@
 	job.standard_assign_skills(character.mind)
 
 	SSticker.minds += character.mind
-	character.client.init_verbs() // init verbs for the late join
+// Removed duplicate init_verbs() call - verbs already finalized in Login()
 	var/mob/living/carbon/human/humanc
 	if(ishuman(character))
 		humanc = character	//Let's retypecast the var to be human,
@@ -818,7 +816,7 @@
 		mind.transfer_to(H)					//won't transfer key since the mind is not active
 		mind.original_character = H
 	H.name = real_name
-	client.init_verbs()
+	// Removed early init_verbs() call - verbs will be initialized after Login() in BYOND 516
 	. = H
 	new_character = .
 	if(transfer_after)
@@ -840,11 +838,10 @@
 		return
 	client.crew_manifest_delay = world.time + (1 SECONDS)
 
-	var/dat = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'></head><body>"
-	dat += "<h4>Crew Manifest</h4>"
+	var/dat = "<h4>Crew Manifest</h4>"
 	// dat += GLOB.data_core.get_manifest_dr(OOC = 1)
 
-	src << browse(dat, "window=manifest;size=387x420;can_close=1")
+	src << browse(HTML_SKELETON(dat), "window=manifest;size=387x420;can_close=1")
 
 /mob/dead/new_player/Move()
 	return 0
